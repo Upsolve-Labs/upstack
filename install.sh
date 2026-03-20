@@ -13,10 +13,6 @@ fi
 
 prompt_yn() {
   local prompt="$1" default="$2"
-  if [ "$INTERACTIVE" = false ]; then
-    # Non-interactive: use default
-    if [ "$default" = "Y" ]; then return 0; else return 1; fi
-  fi
   read -p "$prompt" -n 1 -r
   echo
   if [ "$default" = "Y" ]; then
@@ -26,13 +22,10 @@ prompt_yn() {
   fi
 }
 
+# --- Always safe: link skills ---
 echo "Installing upstack..."
-if [ "$INTERACTIVE" = false ]; then
-  echo "(non-interactive mode — accepting defaults, skipping optional extras)"
-fi
 echo ""
 
-# 1. Link skills
 mkdir -p "$SKILLS_DIR"
 
 for skill_dir in "$UPSTACK_DIR"/skills/*/; do
@@ -49,7 +42,52 @@ echo ""
 echo "upstack v$(cat "$UPSTACK_DIR/VERSION") installed. $(ls -d "$UPSTACK_DIR"/skills/*/ | wc -l | tr -d ' ') skills linked."
 echo ""
 
-# 2. Install gh CLI if missing
+# --- Non-interactive: report status, don't act ---
+if [ "$INTERACTIVE" = false ]; then
+  HAS_BREW=false
+  command -v brew &> /dev/null && HAS_BREW=true
+
+  echo "INSTALL_STATUS:"
+
+  # gh
+  if command -v gh &> /dev/null; then
+    echo "  gh: installed"
+    if gh auth status &> /dev/null; then
+      echo "  gh-auth: authenticated"
+    else
+      echo "  gh-auth: not-authenticated"
+    fi
+  else
+    echo "  gh: missing"
+  fi
+
+  # agent-browser
+  if command -v agent-browser &> /dev/null; then
+    echo "  agent-browser: installed"
+  else
+    echo "  agent-browser: missing"
+  fi
+
+  # linear-cli
+  if command -v linear &> /dev/null; then
+    echo "  linear-cli: installed"
+  else
+    echo "  linear-cli: not-installed"
+  fi
+
+  echo "  homebrew: $HAS_BREW"
+  echo ""
+  echo "NEXT_STEPS:"
+  echo "  - Walk the user through installing any missing tools (one AskUserQuestion per tool)."
+  echo "  - Add an 'upstack' section to the project's CLAUDE.md stating:"
+  echo "    - Use agent-browser for all web browsing."
+  echo "    - Available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade."
+  exit 0
+fi
+
+# --- Interactive: prompt for each decision ---
+
+# Install gh CLI if missing
 if ! command -v gh &> /dev/null; then
   echo "GitHub CLI (gh) is required for /ship, /review, and /advisor."
   if command -v brew &> /dev/null; then
@@ -63,24 +101,19 @@ else
   echo "gh: installed."
 fi
 
-# 3. Ensure gh is authenticated
+# Ensure gh is authenticated
 if command -v gh &> /dev/null; then
   if ! gh auth status &> /dev/null; then
-    if [ "$INTERACTIVE" = true ]; then
-      echo ""
-      echo "gh is installed but not authenticated."
-      echo ""
-      gh auth login
-    else
-      echo ""
-      echo "NEEDS_ACTION: gh-auth — run 'gh auth login' in your terminal to sign in."
-    fi
+    echo ""
+    echo "gh is installed but not authenticated."
+    echo ""
+    gh auth login
   else
     echo "gh: authenticated."
   fi
 fi
 
-# 4. Install agent-browser if missing
+# Install agent-browser if missing
 if ! command -v agent-browser &> /dev/null; then
   echo ""
   echo "agent-browser is required for /plan, /execute, /validate, and /qa (screenshots, UI navigation)."
@@ -96,7 +129,7 @@ else
   echo "agent-browser: installed."
 fi
 
-# 5. Optional: Linear CLI
+# Optional: Linear CLI
 if prompt_yn "
 Install Linear CLI for ticket tracking alongside TODO.md? (y/N) " "N"; then
   if command -v brew &> /dev/null; then
@@ -105,11 +138,9 @@ Install Linear CLI for ticket tracking alongside TODO.md? (y/N) " "N"; then
   else
     echo "  Homebrew not found. Install manually: https://github.com/schpet/linear-cli"
   fi
-else
-  SKIPPED="${SKIPPED}linear-cli,"
 fi
 
-# 6. Optional: Add to current project for teammates
+# Optional: Add to current project for teammates
 if prompt_yn "
 Add upstack to the current project so teammates get it? (y/N) " "N"; then
   PROJECT_SKILLS="$(pwd)/.claude/skills"
@@ -117,12 +148,7 @@ Add upstack to the current project so teammates get it? (y/N) " "N"; then
   cp -r "$UPSTACK_DIR"/skills/* "$PROJECT_SKILLS/"
   echo "  Copied skills to $PROJECT_SKILLS"
   echo "  Commit .claude/skills/ so teammates get upstack automatically."
-else
-  SKIPPED="${SKIPPED}project-skills,"
 fi
 
 echo ""
-if [ -n "$SKIPPED" ]; then
-  echo "SKIPPED_OPTIONAL: ${SKIPPED%,}"
-fi
 echo "Setup complete. Run /advisor to get started."

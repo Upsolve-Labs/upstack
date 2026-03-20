@@ -23,7 +23,7 @@ At Upsolve, we are hyper focused on security, reliability, and grounding agents 
 
 Open Claude Code and paste this. Claude does the rest.
 
-> Install upstack: clone `https://github.com/Upsolve-Labs/upstack.git` to `~/.upstack` (try HTTPS first, fall back to SSH with `git@github.com:Upsolve-Labs/upstack.git` if auth fails), then run `cd ~/.upstack && ./install.sh`. The install script links skills, installs gh and agent-browser if missing, and handles GitHub auth. It auto-detects non-interactive shells so it works from Claude Code without hanging on prompts. After the script finishes, check its output for `NEEDS_ACTION` items (like gh auth) and help the user resolve them, then check for `SKIPPED_OPTIONAL` items and ask the user about each one individually (e.g. "Would you like to install Linear CLI for ticket tracking?" or "Want me to add upstack skills to this project so teammates get them automatically?"). Finally, add an "upstack" section to CLAUDE.md that says to use agent-browser for all web browsing and lists the available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade.
+> Install upstack: clone `https://github.com/Upsolve-Labs/upstack.git` to `~/.upstack` (try HTTPS first, fall back to SSH with `git@github.com:Upsolve-Labs/upstack.git` if auth fails), then run `cd ~/.upstack && ./install.sh`. The script links skills and prints an `INSTALL_STATUS` report and `NEXT_STEPS`. Do NOT install anything yourself — read the status, then walk the user through each missing tool one AskUserQuestion at a time. Follow the `NEXT_STEPS` in the output.
 
 ### Codex, Gemini CLI, or Cursor
 
