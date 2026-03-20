@@ -1,6 +1,8 @@
 # upstack
 
-Lightweight Claude Code (+ others) skill suite, used by the team at [Upsolve AI](https://upsolve.ai/). Red/Green TDD workflow with 9 focused skills, minimal dependencies. Inspired by [gstack](https://github.com/garrytan/gstack) and [simon wilson](https://simonwillison.net/guides/agentic-engineering-patterns/red-green-tdd/).
+Lightweight Claude Code (+ others) skill suite, used by the team at [Upsolve AI](https://upsolve.ai/).
+
+Red/Green TDD workflow with 9 focused skills, minimal dependencies. Inspired by [gstack](https://github.com/garrytan/gstack) and [simon wilson](https://simonwillison.net/guides/agentic-engineering-patterns/red-green-tdd/).
 
 Hi, I'm [Serguei](https://www.linkedin.com/in/sbalanovich/), CTO at Upsolve. I built [Hyperauto](https://www.palantir.com/offerings/hyperauto/) at Palantir and I'm now working to help teams build robust, reliable data agents for their teams and customers. Like Garry, I think we're currently on the cusp of something huge in the AI coding space. But after playing around with gstack, I found its approach to be much more suited for new & ambitious greenfield projects than iterating on existing products.
 
@@ -48,7 +50,7 @@ Skills are plain markdown — they work in any agent that reads SKILL.md files.
 
 ```
 you:    I want to build a telemetry dashboard for my SaaS app
-you:    /plan add user authentication with OAuth
+you:    /plan
 claude: [checks for test rig, proposes scope, eng review, test plan, then implementation plan]
 
 you:    /execute
@@ -99,7 +101,7 @@ Or manually: `cd ~/.bstack && git pull`
 
 - **Tests before code, always.** Red/Green TDD is the default path.
 - **Evidence-based PRs.** Screenshots and API examples ship with every PR.
-- **Scope discipline.** Out-of-scope discoveries go to TODO.md, not into the current work.
+- **Scope discipline.** Out-of-scope discoveries go to TODO.md (or Linear tickets), not into the current work.
 - **No bloat.** 9 skills, ~400 lines total. No build system, no templates, no binaries.
 
 ## License
