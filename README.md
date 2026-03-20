@@ -10,7 +10,7 @@ At Upsolve, we are hyper focused on security, reliability, and grounding agents 
 
 ## Quick Start: Your First 5 Minutes
 
-1. Install bstack (30 seconds, see below)
+1. Install upstack (30 seconds, see below)
 2. Open your project in Claude Code
 3. Run `/advisor` to see where you stand
 4. Run `/plan` on your first feature or bug
@@ -23,9 +23,7 @@ At Upsolve, we are hyper focused on security, reliability, and grounding agents 
 
 Open Claude Code and paste this. Claude does the rest.
 
-> Install upstack: run `git clone https://github.com/Upsolve-Labs/upstack.git ~/.upstack && cd ~/.upstack && ./install.sh` — the install script will handle everything: linking skills, installing gh and agent-browser if missing, signing into GitHub, and asking about optional extras. After it finishes, add an "upstack" section to CLAUDE.md that says to use agent-browser for all web browsing and lists the available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade.
-
-The install script will walk you through gh authentication, agent-browser setup, and optionally installing the Linear CLI and adding upstack to your project for teammates.
+> Install upstack: clone `https://github.com/Upsolve-Labs/upstack.git` to `~/.upstack` (try HTTPS first, fall back to SSH with `git@github.com:Upsolve-Labs/upstack.git` if auth fails), then run `cd ~/.upstack && ./install.sh`. The install script links skills, installs gh and agent-browser if missing, and handles GitHub auth. It auto-detects non-interactive shells so it works from Claude Code without hanging on prompts. After the script finishes, check its output for `NEEDS_ACTION` items (like gh auth) and help the user resolve them, then check for `SKIPPED_OPTIONAL` items and ask the user about each one individually (e.g. "Would you like to install Linear CLI for ticket tracking?" or "Want me to add upstack skills to this project so teammates get them automatically?"). Finally, add an "upstack" section to CLAUDE.md that says to use agent-browser for all web browsing and lists the available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade.
 
 ### Codex, Gemini CLI, or Cursor
 
@@ -87,7 +85,7 @@ Independent skills:
 | **/qa**      | Exploratory testing: traverse UI with agent-browser, find edge cases, screenshot findings. |
 | **/advisor** | Analyze git state and recommend which skill to run next.                                   |
 | **/setup**   | Check prerequisites and verify installation.                                               |
-| **/upgrade** | Pull latest bstack with backup.                                                            |
+| **/upgrade** | Pull latest upstack with backup.                                                           |
 
 ## Upgrade
 
@@ -95,7 +93,7 @@ Independent skills:
 /upgrade
 ```
 
-Or manually: `cd ~/.bstack && git pull`
+Or manually: `cd ~/.upstack && git pull`
 
 ## Philosophy
 
