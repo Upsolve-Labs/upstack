@@ -30,12 +30,17 @@ Print table with status for each tool. Mark required tools vs optional.
 If required tools are missing, AskUserQuestion:
 "Missing: [list]. Should I show install commands?"
 
-Install commands (never run automatically):
+Install commands (never run automatically). Detect OS for appropriate package manager:
 
-- gh: `brew install gh` then `gh auth login`
-- agent-browser: `brew install agent-browser` then `agent-browser install`
+**gh** (https://cli.github.com/):
+- macOS: `brew install gh` then `gh auth login`
+- Linux (apt): see https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+- Linux (dnf): `sudo dnf install gh` then `gh auth login`
+- Windows: `winget install --id GitHub.cli` then `gh auth login`
 
-Detect OS for appropriate package manager (brew for macOS, apt for Linux).
+**agent-browser** by Vercel (https://github.com/vercel-labs/agent-browser):
+- macOS: `brew install agent-browser` then `agent-browser install`
+- Other: `npm install -g agent-browser` then `agent-browser install` (requires Node.js)
 
 ## Verify Skill Symlinks
 

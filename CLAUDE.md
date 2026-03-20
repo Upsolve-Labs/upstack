@@ -25,3 +25,8 @@
 - gh: needed for /ship to push commits, create/update PRs, and generate release notes
 - agent-browser: needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality
 - linear-cli: optional, integrates with your team's Linear instead of relying just on TODO.md
+
+## upstack
+
+- Use agent-browser for all web browsing.
+- Available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade.

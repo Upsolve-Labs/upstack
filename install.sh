@@ -4,6 +4,14 @@ set -e
 UPSTACK_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$HOME/.claude/skills"
 
+# Detect OS
+case "$(uname -s)" in
+  Darwin*) OS="macos" ;;
+  Linux*)  OS="linux" ;;
+  MINGW*|MSYS*|CYGWIN*) OS="windows" ;;
+  *)       OS="unknown" ;;
+esac
+
 # Detect non-interactive shell (e.g. Claude Code, piped input)
 if [ -t 0 ]; then
   INTERACTIVE=true
@@ -19,6 +27,58 @@ prompt_yn() {
     [[ ! $REPLY =~ ^[Nn]$ ]]
   else
     [[ $REPLY =~ ^[Yy]$ ]]
+  fi
+}
+
+# Platform-specific install helpers
+install_gh() {
+  if [ "$OS" = "macos" ] && command -v brew &> /dev/null; then
+    brew install gh
+  elif [ "$OS" = "linux" ]; then
+    if command -v apt &> /dev/null; then
+      echo "Installing gh via apt..."
+      (type -p wget >/dev/null || sudo apt-get install wget -y) \
+        && sudo mkdir -p -m 755 /etc/apt/keyrings \
+        && out=$(mktemp) && wget -nv -O"$out" https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        && cat "$out" | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+        && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+        && sudo apt update && sudo apt install gh -y
+    elif command -v dnf &> /dev/null; then
+      echo "Installing gh via dnf..."
+      sudo dnf install -y gh
+    else
+      echo "  Could not detect a supported package manager."
+      echo "  Install manually: https://cli.github.com/"
+      return 1
+    fi
+  elif [ "$OS" = "windows" ]; then
+    if command -v winget &> /dev/null; then
+      winget install --id GitHub.cli
+    elif command -v scoop &> /dev/null; then
+      scoop install gh
+    else
+      echo "  Install manually: https://cli.github.com/"
+      return 1
+    fi
+  else
+    echo "  Install manually: https://cli.github.com/"
+    return 1
+  fi
+}
+
+# agent-browser is from Vercel (https://github.com/vercel-labs/agent-browser)
+install_agent_browser() {
+  if [ "$OS" = "macos" ] && command -v brew &> /dev/null; then
+    brew install agent-browser
+  elif command -v npm &> /dev/null; then
+    echo "Installing agent-browser via npm (from Vercel)..."
+    npm install -g agent-browser
+  else
+    echo "  agent-browser requires Homebrew (macOS) or npm (any platform)."
+    echo "  Install Node.js first: https://nodejs.org/"
+    echo "  Then run: npm install -g agent-browser"
+    return 1
   fi
 }
 
@@ -75,13 +135,28 @@ if [ "$INTERACTIVE" = false ]; then
     echo "  linear-cli: missing"
   fi
 
+  echo "  os: $OS"
   echo "  homebrew: $HAS_BREW"
+  HAS_NPM=false
+  command -v npm &> /dev/null && HAS_NPM=true
+  echo "  npm: $HAS_NPM"
+  HAS_APT=false
+  command -v apt &> /dev/null && HAS_APT=true
+  echo "  apt: $HAS_APT"
   echo ""
   echo "NEXT_STEPS:"
   echo "  - Walk the user through installing any missing tools (one AskUserQuestion per tool)."
   echo "    - gh: (strongly recommended) needed for /ship to push commits, create/update PRs, and generate release notes."
-  echo "    - agent-browser: (strongly recommended) needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality."
+  echo "      - macOS: brew install gh"
+  echo "      - Linux (apt): see https://github.com/cli/cli/blob/trunk/docs/install_linux.md"
+  echo "      - Linux (dnf): sudo dnf install gh"
+  echo "      - Windows: winget install --id GitHub.cli"
+  echo "    - agent-browser: (strongly recommended) Vercel's browser automation CLI (https://github.com/vercel-labs/agent-browser). Needed for /plan, /validate, /review, /qa."
+  echo "      - macOS: brew install agent-browser && agent-browser install"
+  echo "      - Other: npm install -g agent-browser && agent-browser install (requires Node.js)"
   echo "    - linear-cli: (optional) needed to integrate with your team's Linear instead of relying just on TODO.md."
+  echo "      - macOS: brew install schpet/tap/linear-cli"
+  echo "      - Other: npm install -g linear-cli"
   echo "  - Add an 'upstack' section to the project's CLAUDE.md stating:"
   echo "    - Use agent-browser for all web browsing."
   echo "    - Available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade."
@@ -93,12 +168,8 @@ fi
 # Install gh CLI if missing
 if ! command -v gh &> /dev/null; then
   echo "GitHub CLI (gh) is needed for /ship to push commits, create/update PRs, and generate release notes."
-  if command -v brew &> /dev/null; then
-    if prompt_yn "Install gh via Homebrew? (Y/n) " "Y"; then
-      brew install gh
-    fi
-  else
-    echo "  Install manually: https://cli.github.com/"
+  if prompt_yn "Install gh? (Y/n) " "Y"; then
+    install_gh
   fi
 else
   echo "gh: installed."
@@ -116,17 +187,12 @@ if command -v gh &> /dev/null; then
   fi
 fi
 
-# Install agent-browser if missing
+# Install agent-browser if missing (Vercel's browser automation CLI)
 if ! command -v agent-browser &> /dev/null; then
   echo ""
-  echo "agent-browser is needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality."
-  if command -v brew &> /dev/null; then
-    if prompt_yn "Install agent-browser via Homebrew? (Y/n) " "Y"; then
-      brew install agent-browser
-      agent-browser install
-    fi
-  else
-    echo "  Install manually: https://agent-browser.dev/"
+  echo "agent-browser (by Vercel) is needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality."
+  if prompt_yn "Install agent-browser? (Y/n) " "Y"; then
+    install_agent_browser && agent-browser install
   fi
 else
   echo "agent-browser: installed."
@@ -135,11 +201,14 @@ fi
 # Optional: Linear CLI
 if prompt_yn "
 Install Linear CLI to integrate with your team's Linear instead of relying just on TODO.md? (y/N) " "N"; then
-  if command -v brew &> /dev/null; then
+  if [ "$OS" = "macos" ] && command -v brew &> /dev/null; then
     brew install schpet/tap/linear-cli
     echo "  Linear CLI installed."
+  elif command -v npm &> /dev/null; then
+    npm install -g linear-cli
+    echo "  Linear CLI installed."
   else
-    echo "  Homebrew not found. Install manually: https://github.com/schpet/linear-cli"
+    echo "  Install manually: https://github.com/schpet/linear-cli"
   fi
 fi
 
