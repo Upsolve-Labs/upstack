@@ -2,7 +2,8 @@
 set -e
 
 UPSTACK_DIR="$(cd "$(dirname "$0")" && pwd)"
-SKILLS_DIR="$HOME/.claude/skills"
+SKILLS_DIR="$(dirname "$UPSTACK_DIR")"
+SKILLS_BASENAME="$(basename "$SKILLS_DIR")"
 
 # Detect OS
 case "$(uname -s)" in
@@ -86,23 +87,32 @@ install_agent_browser() {
 echo "Installing upstack..."
 echo ""
 
-mkdir -p "$SKILLS_DIR"
-
-# Symlink upstack repo into skills dir (like gstack)
-UPSTACK_LINK="$SKILLS_DIR/upstack"
-if [ -L "$UPSTACK_LINK" ] || [ ! -e "$UPSTACK_LINK" ]; then
-  ln -snf "$UPSTACK_DIR" "$UPSTACK_LINK"
-fi
-
-# Create relative symlinks: ~/.claude/skills/<name> -> upstack/skills/<name>
-for skill_dir in "$UPSTACK_DIR"/skills/*/; do
-  skill_name="$(basename "$skill_dir")"
-  target="$SKILLS_DIR/$skill_name"
-  if [ -L "$target" ] || [ ! -e "$target" ]; then
-    ln -snf "upstack/skills/$skill_name" "$target"
+# Link skill subdirectories into the parent skills directory (like gstack)
+link_skill_dirs() {
+  local upstack_dir="$1"
+  local skills_dir="$2"
+  local linked=()
+  for skill_dir in "$upstack_dir"/skills/*/; do
+    if [ -f "$skill_dir/SKILL.md" ]; then
+      skill_name="$(basename "$skill_dir")"
+      target="$skills_dir/$skill_name"
+      if [ -L "$target" ] || [ ! -e "$target" ]; then
+        ln -snf "upstack/skills/$skill_name" "$target"
+        linked+=("$skill_name")
+      fi
+    fi
+  done
+  if [ ${#linked[@]} -gt 0 ]; then
+    echo "  linked skills: ${linked[*]}"
   fi
-  echo "  linked $skill_name"
-done
+}
+
+if [ "$SKILLS_BASENAME" = "skills" ]; then
+  link_skill_dirs "$UPSTACK_DIR" "$SKILLS_DIR"
+else
+  echo "  (skipped skill symlinks — not inside .claude/skills/)"
+  echo "  Clone upstack into ~/.claude/skills/upstack/ and re-run ./install.sh"
+fi
 
 echo ""
 echo "upstack v$(cat "$UPSTACK_DIR/VERSION") installed. $(ls -d "$UPSTACK_DIR"/skills/*/ | wc -l | tr -d ' ') skills linked."

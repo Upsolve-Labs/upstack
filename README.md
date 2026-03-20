@@ -23,23 +23,23 @@ At Upsolve, we are hyper focused on security, reliability, and grounding agents 
 
 Open Claude Code and paste this. Claude does the rest.
 
-> Install upstack: clone `https://github.com/Upsolve-Labs/upstack.git` to `~/.upstack` (try HTTPS first, fall back to SSH with `git@github.com:Upsolve-Labs/upstack.git` if auth fails), then run `cd ~/.upstack && ./install.sh`. The script links skills and prints an `INSTALL_STATUS` report and `NEXT_STEPS`. Do NOT install anything yourself — read the status, then walk the user through each missing tool one AskUserQuestion at a time. Follow the `NEXT_STEPS` in the output.
+> Install upstack: clone `https://github.com/Upsolve-Labs/upstack.git` to `~/.claude/skills/upstack` (try HTTPS first, fall back to SSH with `git@github.com:Upsolve-Labs/upstack.git` if auth fails), then run `cd ~/.claude/skills/upstack && ./install.sh`. The script links skills and prints an `INSTALL_STATUS` report and `NEXT_STEPS`. Do NOT install anything yourself — read the status, then walk the user through each missing tool one AskUserQuestion at a time. Follow the `NEXT_STEPS` in the output.
 
 ### Codex, Gemini CLI, or Cursor
 
 upstack uses the SKILL.md standard. Clone the repo, then copy the skills into your tool's skill directory:
 
 ```bash
-git clone https://github.com/Upsolve-Labs/upstack.git ~/.upstack
+git clone https://github.com/Upsolve-Labs/upstack.git ~/.claude/skills/upstack
 
 # Codex
-cp -r ~/.upstack/skills/* .agents/skills/
+cp -r ~/.claude/skills/upstack/skills/* .agents/skills/
 
 # Cursor
-cp -r ~/.upstack/skills/* .cursor/skills/
+cp -r ~/.claude/skills/upstack/skills/* .cursor/skills/
 
 # Gemini CLI
-cp -r ~/.upstack/skills/* .gemini/skills/
+cp -r ~/.claude/skills/upstack/skills/* .gemini/skills/
 ```
 
 Skills are plain markdown — they work in any agent that reads SKILL.md files.
@@ -103,7 +103,7 @@ The install script detects your OS and what's missing, then walks you through ea
 /upgrade
 ```
 
-Or manually: `cd ~/.upstack && git pull`
+Or manually: `cd ~/.claude/skills/upstack && git pull`
 
 ## Philosophy
 
