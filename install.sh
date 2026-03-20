@@ -88,13 +88,19 @@ echo ""
 
 mkdir -p "$SKILLS_DIR"
 
+# Symlink upstack repo into skills dir (like gstack)
+UPSTACK_LINK="$SKILLS_DIR/upstack"
+if [ -L "$UPSTACK_LINK" ] || [ ! -e "$UPSTACK_LINK" ]; then
+  ln -snf "$UPSTACK_DIR" "$UPSTACK_LINK"
+fi
+
+# Create relative symlinks: ~/.claude/skills/<name> -> upstack/skills/<name>
 for skill_dir in "$UPSTACK_DIR"/skills/*/; do
   skill_name="$(basename "$skill_dir")"
   target="$SKILLS_DIR/$skill_name"
-  if [ -L "$target" ]; then
-    rm "$target"
+  if [ -L "$target" ] || [ ! -e "$target" ]; then
+    ln -snf "upstack/skills/$skill_name" "$target"
   fi
-  ln -sf "$skill_dir" "$target"
   echo "  linked $skill_name"
 done
 
