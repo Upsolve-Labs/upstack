@@ -1,12 +1,12 @@
 ---
-name: ship
+name: ship-pr
 description: |
   Ship a feature branch: write docs, bump version, create PR with screenshots
   and evidence. Links Linear tickets if available. Use when ready to merge.
 disable-model-invocation: true
 ---
 
-# Ship
+# Ship PR
 
 Three-in-one: documentation, versioning, and PR creation. No confirmation pauses once the version is decided.
 

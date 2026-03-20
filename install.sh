@@ -162,12 +162,12 @@ if [ "$INTERACTIVE" = false ]; then
   echo ""
   echo "NEXT_STEPS:"
   echo "  - Walk the user through installing any missing tools (one AskUserQuestion per tool)."
-  echo "    - gh: (strongly recommended) needed for /ship to push commits, create/update PRs, and generate release notes."
+  echo "    - gh: (strongly recommended) needed for /ship-pr to push commits, create/update PRs, and generate release notes."
   echo "      - macOS: brew install gh"
   echo "      - Linux (apt): see https://github.com/cli/cli/blob/trunk/docs/install_linux.md"
   echo "      - Linux (dnf): sudo dnf install gh"
   echo "      - Windows: winget install --id GitHub.cli"
-  echo "    - agent-browser: (strongly recommended) Vercel's browser automation CLI (https://github.com/vercel-labs/agent-browser). Needed for /plan, /validate, /review, /qa."
+  echo "    - agent-browser: (strongly recommended) Vercel's browser automation CLI (https://github.com/vercel-labs/agent-browser). Needed for /plan, /validate, /review, /qa-review."
   echo "      - macOS: brew install agent-browser && agent-browser install"
   echo "      - Other: npm install -g agent-browser && agent-browser install (requires Node.js)"
   echo "    - linear-cli: (optional) needed to integrate with your team's Linear instead of relying just on TODO.md."
@@ -175,7 +175,7 @@ if [ "$INTERACTIVE" = false ]; then
   echo "      - Other: npm install -g linear-cli"
   echo "  - Add an 'upstack' section to the project's CLAUDE.md stating:"
   echo "    - Use agent-browser for all web browsing."
-  echo "    - Available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade."
+  echo "    - Available skills: /plan, /execute, /validate, /review, /ship-pr, /qa-review, /advisor, /setup, /upgrade, /upstack-run."
   echo "  - Tell the user to run /advisor to get started."
   exit 0
 fi
@@ -184,7 +184,7 @@ fi
 
 # Install gh CLI if missing
 if ! command -v gh &> /dev/null; then
-  echo "GitHub CLI (gh) is needed for /ship to push commits, create/update PRs, and generate release notes."
+  echo "GitHub CLI (gh) is needed for /ship-pr to push commits, create/update PRs, and generate release notes."
   if prompt_yn "Install gh? (Y/n) " "Y"; then
     install_gh
   fi
@@ -207,7 +207,7 @@ fi
 # Install agent-browser if missing (Vercel's browser automation CLI)
 if ! command -v agent-browser &> /dev/null; then
   echo ""
-  echo "agent-browser (by Vercel) is needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality."
+  echo "agent-browser (by Vercel) is needed for /plan, /validate, /review, /qa-review to navigate frontend, click around the browser, and screenshot functionality."
   if prompt_yn "Install agent-browser? (Y/n) " "Y"; then
     install_agent_browser && agent-browser install
   fi

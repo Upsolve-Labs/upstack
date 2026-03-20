@@ -22,7 +22,7 @@ You are helping the user decide what to do next.
 
 - **DIRTY**: uncommitted changes -> suggest /execute (to finish + commit) or /validate
 - **BEHIND**: branch behind remote -> suggest pull first
-- **READY_TO_SHIP**: clean, tests pass, PR approved -> suggest /ship
+- **READY_TO_SHIP**: clean, tests pass, PR approved -> suggest /ship-pr
 - **NEEDS_REVIEW**: open PR without review -> suggest /review
 - **FRESH**: clean main, no WIP -> suggest /plan
 - **IN_PROGRESS**: feature branch with commits -> suggest /validate or /execute

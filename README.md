@@ -15,7 +15,7 @@ At Upsolve, we are hyper focused on security, reliability, and grounding agents 
 3. Run `/advisor` to see where you stand
 4. Run `/plan` on your first feature or bug
 5. Run `/execute` to build it with TDD
-6. Run `/ship` to open a PR with screenshots and evidence
+6. Run `/ship-pr` to open a PR with screenshots and evidence
 
 ## Install — Takes 30 Seconds
 
@@ -60,14 +60,14 @@ claude: [walks through every planned path manually, screenshots UI, saves API ex
 you:    /review
 claude: [diffs against base branch, finds bugs and security issues, numbered findings like 1A, 2A]
 
-you:    /ship
+you:    /ship-pr
 claude: [writes docs, bumps version, opens PR with screenshots and Linear links]
 ```
 
 ## Workflow
 
 ```
-/plan -> /execute -> /validate -> /review -> /ship
+/plan -> /execute -> /validate -> /review -> /ship-pr
 ```
 
 | Skill         | What It Does                                                                           |
@@ -76,23 +76,29 @@ claude: [writes docs, bumps version, opens PR with screenshots and Linear links]
 | **/execute**  | RED: write failing tests. GREEN: implement. Atomic commits.                            |
 | **/validate** | Manually verify every path works. Save screenshots + API examples to `evidence/`.      |
 | **/review**   | Senior engineer code review against base branch. Best in a clean conversation.         |
-| **/ship**     | Docs, version bump, PR with evidence screenshots and Linear links.                     |
+| **/ship-pr**  | Docs, version bump, PR with evidence screenshots and Linear links.                     |
+
+Automated flow:
+
+| Skill            | What It Does                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| **/upstack-run** | Full sprint: plan -> execute -> validate -> review -> ship-pr. Loops until clean, ends with a pushed PR. |
 
 Independent skills:
 
-| Skill        | What It Does                                                                               |
-| ------------ | ------------------------------------------------------------------------------------------ |
-| **/qa**      | Exploratory testing: traverse UI with agent-browser, find edge cases, screenshot findings. |
-| **/advisor** | Analyze git state and recommend which skill to run next.                                   |
-| **/setup**   | Check prerequisites and verify installation.                                               |
-| **/upgrade** | Pull latest upstack with backup.                                                           |
+| Skill            | What It Does                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| **/qa-review**   | Exploratory testing: traverse UI with agent-browser, find edge cases, screenshot findings. |
+| **/advisor**     | Analyze git state and recommend which skill to run next.                                   |
+| **/setup**       | Check prerequisites and verify installation.                                               |
+| **/upgrade**     | Pull latest upstack with backup.                                                           |
 
 ## Dependencies
 
 | Tool | Required? | Why | Install |
 | --- | --- | --- | --- |
-| **[gh](https://cli.github.com/)** | Yes | `/ship` uses it to push commits, create/update PRs, and generate release notes. | macOS: `brew install gh` · Linux: [see docs](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) · Windows: `winget install --id GitHub.cli` |
-| **[agent-browser](https://github.com/vercel-labs/agent-browser)** (by Vercel) | Yes | `/plan`, `/validate`, `/review`, `/qa` use it to navigate frontend, click around the browser, and screenshot functionality. | macOS: `brew install agent-browser` · Other: `npm install -g agent-browser` |
+| **[gh](https://cli.github.com/)** | Yes | `/ship-pr` uses it to push commits, create/update PRs, and generate release notes. | macOS: `brew install gh` · Linux: [see docs](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) · Windows: `winget install --id GitHub.cli` |
+| **[agent-browser](https://github.com/vercel-labs/agent-browser)** (by Vercel) | Yes | `/plan`, `/validate`, `/review`, `/qa-review` use it to navigate frontend, click around the browser, and screenshot functionality. | macOS: `brew install agent-browser` · Other: `npm install -g agent-browser` |
 | **[linear-cli](https://github.com/schpet/linear-cli)** | Optional | Integrates with your team's Linear instead of relying just on the `TODO.md` file. | macOS: `brew install schpet/tap/linear-cli` · Other: `npm install -g linear-cli` |
 
 The install script detects your OS and what's missing, then walks you through each one.
@@ -110,7 +116,7 @@ Or manually: `cd ~/.claude/skills/upstack && git pull`
 - **Tests before code, always.** Red/Green TDD is the default path.
 - **Evidence-based PRs.** Screenshots and API examples ship with every PR.
 - **Scope discipline.** Out-of-scope discoveries go to TODO.md (or Linear tickets), not into the current work.
-- **No bloat.** 9 skills, ~400 lines total. No build system, no templates, no binaries.
+- **No bloat.** 10 skills, ~450 lines total. No build system, no templates, no binaries.
 
 ## License
 
