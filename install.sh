@@ -202,7 +202,7 @@ fi
 if prompt_yn "
 Install Linear CLI to integrate with your team's Linear instead of relying just on TODO.md? (y/N) " "N"; then
   if [ "$OS" = "macos" ] && command -v brew &> /dev/null; then
-    brew install schpet/tap/linear-cli
+    brew install schpet/tap/linear
     echo "  Linear CLI installed."
   elif command -v npm &> /dev/null; then
     npm install -g linear-cli
