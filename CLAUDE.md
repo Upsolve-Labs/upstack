@@ -22,6 +22,6 @@
 
 ## External Tools
 
-- agent-browser: for FE navigation, screenshots, testing
-- gh: for PR creation, issue management
-- Linear MCP: optional, for ticket tracking alongside TODO.md
+- gh: needed for /ship to push commits, create/update PRs, and generate release notes
+- agent-browser: needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality
+- linear-cli: optional, integrates with your team's Linear instead of relying just on TODO.md

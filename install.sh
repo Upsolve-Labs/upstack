@@ -72,13 +72,16 @@ if [ "$INTERACTIVE" = false ]; then
   if command -v linear &> /dev/null; then
     echo "  linear-cli: installed"
   else
-    echo "  linear-cli: not-installed"
+    echo "  linear-cli: missing"
   fi
 
   echo "  homebrew: $HAS_BREW"
   echo ""
   echo "NEXT_STEPS:"
   echo "  - Walk the user through installing any missing tools (one AskUserQuestion per tool)."
+  echo "    - gh: (strongly recommended) needed for /ship to push commits, create/update PRs, and generate release notes."
+  echo "    - agent-browser: (strongly recommended) needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality."
+  echo "    - linear-cli: (optional) needed to integrate with your team's Linear instead of relying just on TODO.md."
   echo "  - Add an 'upstack' section to the project's CLAUDE.md stating:"
   echo "    - Use agent-browser for all web browsing."
   echo "    - Available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade."
@@ -89,7 +92,7 @@ fi
 
 # Install gh CLI if missing
 if ! command -v gh &> /dev/null; then
-  echo "GitHub CLI (gh) is required for /ship, /review, and /advisor."
+  echo "GitHub CLI (gh) is needed for /ship to push commits, create/update PRs, and generate release notes."
   if command -v brew &> /dev/null; then
     if prompt_yn "Install gh via Homebrew? (Y/n) " "Y"; then
       brew install gh
@@ -116,7 +119,7 @@ fi
 # Install agent-browser if missing
 if ! command -v agent-browser &> /dev/null; then
   echo ""
-  echo "agent-browser is required for /plan, /execute, /validate, and /qa (screenshots, UI navigation)."
+  echo "agent-browser is needed for /plan, /validate, /review, /qa to navigate frontend, click around the browser, and screenshot functionality."
   if command -v brew &> /dev/null; then
     if prompt_yn "Install agent-browser via Homebrew? (Y/n) " "Y"; then
       brew install agent-browser
@@ -131,7 +134,7 @@ fi
 
 # Optional: Linear CLI
 if prompt_yn "
-Install Linear CLI for ticket tracking alongside TODO.md? (y/N) " "N"; then
+Install Linear CLI to integrate with your team's Linear instead of relying just on TODO.md? (y/N) " "N"; then
   if command -v brew &> /dev/null; then
     brew install schpet/tap/linear-cli
     echo "  Linear CLI installed."

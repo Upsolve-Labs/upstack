@@ -87,6 +87,16 @@ Independent skills:
 | **/setup**   | Check prerequisites and verify installation.                                               |
 | **/upgrade** | Pull latest upstack with backup.                                                           |
 
+## Dependencies
+
+| Tool | Required? | Why |
+| --- | --- | --- |
+| **gh** | Yes | `/ship` uses it to push commits, create/update PRs, and generate release notes. |
+| **agent-browser** | Yes | `/plan`, `/validate`, `/review`, `/qa` use it to navigate frontend, click around the browser, and screenshot functionality. |
+| **linear-cli** | Optional | Integrates with your team's Linear instead of relying just on the `TODO.md` file. |
+
+The install script detects what's missing and walks you through each one.
+
 ## Upgrade
 
 ```
