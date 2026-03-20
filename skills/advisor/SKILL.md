@@ -1,0 +1,39 @@
+---
+name: advisor
+description: |
+  Analyzes git state, TODOs, and project context to recommend which bstack skill
+  to run next. Use when starting a session or unsure what to do.
+---
+
+# Advisor
+
+You are helping the user decide what to do next.
+
+## Gather Context (silently, do not dump raw output)
+1. `git status --short` — uncommitted changes?
+2. `git branch --show-current` — which branch?
+3. `git log --oneline -5` — recent commits
+4. `gh pr list --state open --author @me --limit 5` — open PRs (skip if gh unavailable)
+5. Read TODO.md if it exists
+6. If Linear MCP available: check assigned issues
+
+## Categorize State
+- **DIRTY**: uncommitted changes -> suggest /execute (to finish + commit) or /validate
+- **BEHIND**: branch behind remote -> suggest pull first
+- **READY_TO_SHIP**: clean, tests pass, PR approved -> suggest /ship
+- **NEEDS_REVIEW**: open PR without review -> suggest /review
+- **FRESH**: clean main, no WIP -> suggest /plan
+- **IN_PROGRESS**: feature branch with commits -> suggest /validate or /execute
+
+## Present Recommendation
+Use AskUserQuestion with:
+- 2-line summary of current state
+- Primary recommendation with reasoning
+- 3-4 alternatives including "plan a new task"
+
+For each option, tell the user exactly what to type (e.g., "Run /plan to start a new feature").
+
+## Rules
+- Never run other skills directly. Just recommend.
+- Always include /plan as an option.
+- If TODO.md has active items, mention them.
