@@ -160,6 +160,7 @@ if [ "$INTERACTIVE" = false ]; then
   echo "  - Add an 'upstack' section to the project's CLAUDE.md stating:"
   echo "    - Use agent-browser for all web browsing."
   echo "    - Available skills: /plan, /execute, /validate, /review, /ship, /qa, /advisor, /setup, /upgrade."
+  echo "  - Tell the user to run /advisor to get started."
   exit 0
 fi
 
