@@ -33,7 +33,7 @@ Save all evidence to the `evidence/` folder in the project root (create if neede
 - `evidence/screenshots/` — UI state screenshots
 - `evidence/api/` — Request/response examples in markdown or Postman-compatible format
 
-These artifacts will be referenced by /ship in the PR description.
+These artifacts will be referenced by /ship-pr in the PR description.
 
 ### 4. Gap Analysis
 If anything is off:

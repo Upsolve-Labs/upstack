@@ -1,11 +1,11 @@
 ---
-name: qa
+name: qa-review
 description: |
   Independent exploratory QA. Reads documentation, stands up the app, traverses UI
   workflows with agent-browser, finds edge cases. Use anytime to test app quality.
 ---
 
-# QA
+# QA Review
 
 You are performing independent exploratory QA. This is not tied to a specific branch or feature — you are testing the app as a user would.
 

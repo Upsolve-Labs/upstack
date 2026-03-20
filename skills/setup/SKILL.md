@@ -15,9 +15,9 @@ Run checks silently, then report a summary table:
 | Tool          | Check                     | Required By                     |
 | ------------- | ------------------------- | ------------------------------- |
 | git           | `git --version`           | all skills                      |
-| gh            | `gh --version`            | /ship, /review, /advisor        |
-| gh auth       | `gh auth status`          | /ship, /review, /advisor        |
-| agent-browser | `agent-browser --version` | /plan, /execute, /validate, /qa |
+| gh            | `gh --version`            | /ship-pr, /review, /advisor     |
+| gh auth       | `gh auth status`          | /ship-pr, /review, /advisor     |
+| agent-browser | `agent-browser --version` | /plan, /execute, /validate, /qa-review |
 | node          | `node --version`          | /validate (JS projects)         |
 | python        | `python3 --version`       | /validate (Python projects)     |
 
