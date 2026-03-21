@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0
+
+### Added
+- **`LICENSE`** — MIT license (Upsolve Labs, Inc.)
+- **`.gitignore`** — standard ignores for OS, editor, and local config files
+- **`CONTRIBUTING.md`** — contributor guidelines, conventions, and testing instructions
+- **`SECURITY.md`** — responsible disclosure policy via GitHub Security Advisories
+- **`.github/workflows/release.yml`** — auto-create GitHub Release on merge to main when VERSION changes
+
 ## 0.3.0
 
 ### Added

@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths: [VERSION]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version
+        id: version
+        run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
+
+      - name: Check if tag exists
+        id: check
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extract changelog for this version
+        if: steps.check.outputs.exists == 'false'
+        id: notes
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          # Extract the section for this version from CHANGELOG.md
+          awk "/^## ${version}$/,/^## [0-9]/" CHANGELOG.md | sed '$d' > /tmp/notes.md
+          cat /tmp/notes.md
+
+      - name: Create release
+        if: steps.check.outputs.exists == 'false'
+        run: gh release create "v${{ steps.version.outputs.version }}" --title "v${{ steps.version.outputs.version }}" --notes-file /tmp/notes.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

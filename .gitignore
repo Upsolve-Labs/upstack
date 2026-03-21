@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*~
+.vscode/
+.idea/
+
+# Local config
+.upstack/
+
+# Dependencies (if anyone runs npm locally)
+node_modules/
