@@ -5,6 +5,7 @@ Thanks for your interest in contributing! upstack is a lightweight skill suite â
 ## Reporting Bugs
 
 Open a [GitHub Issue](https://github.com/Upsolve-Labs/upstack/issues) with:
+
 - What you ran (which skill, what context)
 - What you expected
 - What happened instead
@@ -15,6 +16,8 @@ Open a [GitHub Issue](https://github.com/Upsolve-Labs/upstack/issues) with:
 2. Make your changes
 3. Run the tests: `bash test/upstack-config.test.sh && bash test/upstack-update-check.test.sh`
 4. Open a PR against `main`
+
+We strongly recommend that any PR is made using upstack itself. Run `/upstack-run` for a complete run or `/ship-pr` for the final PR step. Our team will review your contribution.
 
 ## Conventions
 
