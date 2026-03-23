@@ -3,9 +3,10 @@ name: plan
 description: |
   Plan a feature or bug fix with deep engineering analysis. Explores the codebase,
   compares implementation alternatives, maps error paths, and produces test coverage
-  diagrams — all before any code is written. Use when starting new work, breaking
-  down a feature, or before any code changes. Strongly recommended as the first
-  step before /execute.
+  diagrams — all before any code is written. Emits structured YAML tickets with
+  dependency DAG and self-contained agent briefs. Optionally materializes to
+  Linear and TODOS.md. Use when starting new work, breaking down a feature, or
+  before any code changes. Strongly recommended as the first step before /execute.
 ---
 
 ## Update Check (run first)

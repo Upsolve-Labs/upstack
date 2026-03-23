@@ -2,7 +2,8 @@
 name: execute
 description: |
   Build a plan to spec using Red/Green TDD. Writes tests first, confirms they fail,
-  then implements. Use after /plan to implement a feature or fix.
+  then implements. Supports --ticket mode for scoped execution with dependency
+  checks and file-level scope guardrails. Use after /plan to implement a feature or fix.
 ---
 
 ## Update Check (run first)

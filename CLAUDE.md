@@ -25,7 +25,7 @@
 
 - gh: needed for /ship-pr to push commits, create/update PRs, and generate release notes
 - agent-browser: needed for /plan, /validate, /review, /qa-review to navigate frontend, click around the browser, and screenshot functionality
-- linear-cli: optional, integrates with your team's Linear instead of relying just on TODO.md
+- linear-cli: optional, /plan materialize phase creates Linear tickets from structured output, /execute updates ticket status. Falls back to TODOS.md when unavailable
 
 ## upstack
 
