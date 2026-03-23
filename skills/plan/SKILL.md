@@ -56,7 +56,7 @@ grep -r "TODO\|FIXME\|HACK\|XXX" -l --exclude-dir=node_modules --exclude-dir=ven
 ```
 
 Then read:
-- TODO.md if it exists. If Linear MCP tools are available, also scan relevant Linear issues.
+- TODOS.md if it exists. If Linear MCP tools are available, also scan relevant Linear issues.
 - CLAUDE.md for project conventions.
 - Any architecture docs or READMEs relevant to the area you're changing.
 
@@ -121,7 +121,7 @@ Rules:
 State your recommendation with a one-line reason. Use AskUserQuestion to get the user's choice.
 
 ### Scope
-After approach is chosen, define boundaries. Strongly recommend removing old code if the new feature replaces it. Flag anything out of scope — add those items to TODO.md (and create Linear issues if MCP is available).
+After approach is chosen, define boundaries. Strongly recommend removing old code if the new feature replaces it. Flag anything out of scope — add those items to TODOS.md (and create Linear issues if MCP is available).
 
 ## Phase 2: Engineering Deep-Dive
 

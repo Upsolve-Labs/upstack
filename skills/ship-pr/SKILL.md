@@ -57,12 +57,12 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
      - Screenshots from `evidence/screenshots/` using `![name](url?raw=true)` format
      - API examples from `evidence/api/` or link to collection
      - Linear ticket references if available (list and link them)
-4. Mark completed items in TODO.md as done.
+4. Mark completed items in TODOS.md as done.
 
 ## On Failure
 Report which step completed and which failed. Do NOT attempt to rollback.
 
 ## Linear Integration
 If `mcp__linear__*` tools are available:
-- Link the PR to relevant Linear issues found in TODO.md (`LINEAR: ENG-xxx` references).
+- Link the PR to relevant Linear issues found in TODOS.md (`LINEAR: ENG-xxx` references).
 - List linked tickets in the PR description.

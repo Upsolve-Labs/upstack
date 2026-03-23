@@ -24,7 +24,7 @@ You are helping the user decide what to do next.
 2. `git branch --show-current` — which branch?
 3. `git log --oneline -5` — recent commits
 4. `gh pr list --state open --author @me --limit 5` — open PRs (skip if gh unavailable)
-5. Read TODO.md if it exists
+5. Read TODOS.md if it exists
 6. If Linear MCP available: check assigned issues
 
 ## Categorize State
@@ -50,4 +50,4 @@ For each option, tell the user exactly what to type (e.g., "Run /plan to start a
 
 - Never run other skills directly. Just recommend.
 - Always include /plan as an option.
-- If TODO.md has active items, mention them.
+- If TODOS.md has active items, mention them.

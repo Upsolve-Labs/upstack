@@ -69,7 +69,7 @@ For backend features:
 ## Scope Guard
 If the task grows beyond what was planned:
 1. STOP immediately.
-2. Add out-of-scope items to TODO.md.
+2. Add out-of-scope items to TODOS.md.
 3. AskUserQuestion: "Discovered [X] is also needed. Include in current scope, note as follow-up, or re-plan?"
 4. Only AskUserQuestion for scope changes. For implementation details, make the simpler choice and keep moving.
 
