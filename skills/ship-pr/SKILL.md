@@ -44,11 +44,13 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
 ## Step 3: PR Creation (no pauses from here)
 1. Commit version + changelog + docs: `chore: bump to vX.Y.Z`
 2. Push branch to remote.
-3. Create PR via `gh pr create`. PR description includes:
-   - Feature summary
-   - Screenshots from `evidence/screenshots/` using `![name](url?raw=true)` format
-   - API examples from `evidence/api/` or link to collection
-   - Linear ticket references if available (list and link them)
+3. Check for existing PR: `gh pr list --head "$(git branch --show-current)" --json number --jq '.[0].number'`
+   - **If PR exists:** Skip `gh pr create` — the push already updated the PR. Optionally run `gh pr comment <number> --body "..."` summarizing the new changes.
+   - **If no PR exists:** Create PR via `gh pr create`. PR description includes:
+     - Feature summary
+     - Screenshots from `evidence/screenshots/` using `![name](url?raw=true)` format
+     - API examples from `evidence/api/` or link to collection
+     - Linear ticket references if available (list and link them)
 4. Mark completed items in TODO.md as done.
 
 ## On Failure

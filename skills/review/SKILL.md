@@ -56,7 +56,9 @@ Use numbered codes:
 
 Categories: CRITICAL (must fix), SECURITY (must fix), SCOPE (drift), SUGGESTION (optional improvement).
 
-Present all findings, then AskUserQuestion: "Which findings should I address? (e.g., 'fix 1A 2A, skip 3A')"
+**If running inside `/upstack-run` and `/plan` used the fast-path:** auto-fix ALL findings (CRITICAL, SECURITY, SUGGESTION, and SCOPE) without AskUserQuestion. Commit the fixes and continue.
+
+**Otherwise (standalone or full-ceremony `/upstack-run`):** Present all findings, then AskUserQuestion: "Which findings should I address? (e.g., 'fix 1A 2A, skip 3A')"
 
 ## Scope
 This is about code correctness, not functional completeness. Functional verification is /validate's job.

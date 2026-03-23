@@ -2,8 +2,8 @@
 name: upstack-run
 description: |
   Full sprint flow: /plan -> /execute -> /validate -> /review -> /ship-pr.
-  Skips planning if a plan already exists. Loops review/execute until clean.
-  End result is a pushed PR. Use to run the entire workflow hands-free.
+  Always runs /plan (which auto-detects small follow-ups via fast-path).
+  Loops review/execute until clean. End result is a pushed PR.
 ---
 
 ## Update Check (run first)
@@ -19,12 +19,9 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/upstack/
 
 Chains the full sprint flow into a single run. The end result is a pushed PR.
 
-## Step 1: Plan (skip if plan exists)
+## Step 1: Plan
 
-Check if a plan already exists in the current context.
-
-- **If a plan exists:** announce "Plan found, skipping to /execute." and proceed to Step 2.
-- **If no plan exists:** run /plan. This is the only interactive phase — answer the user's questions and get plan approval before continuing. Do NOT proceed until the user approves the plan.
+Always run /plan. The /plan skill has its own Fast-Path Check that detects when a plan already exists in context and the new request is a small follow-up — in that case it skips full ceremony and produces a lightweight amendment. If the change is complex, /plan runs its full flow. Either way, do NOT proceed until /plan completes.
 
 ## Step 2: Execute
 
