@@ -170,7 +170,7 @@ if [ "$INTERACTIVE" = false ]; then
   echo "    - agent-browser: (strongly recommended) Vercel's browser automation CLI (https://github.com/vercel-labs/agent-browser). Needed for /plan, /validate, /review, /qa-review."
   echo "      - macOS: brew install agent-browser && agent-browser install"
   echo "      - Other: npm install -g agent-browser && agent-browser install (requires Node.js)"
-  echo "    - linear-cli: (optional) needed to integrate with your team's Linear instead of relying just on TODO.md."
+  echo "    - linear-cli: (optional) needed to integrate with your team's Linear instead of relying just on TODOS.md."
   echo "      - macOS: brew install schpet/tap/linear-cli"
   echo "      - Other: npm install -g linear-cli"
   echo "  - Add an 'upstack' section to the project's CLAUDE.md stating:"
@@ -217,7 +217,7 @@ fi
 
 # Optional: Linear CLI
 if prompt_yn "
-Install Linear CLI to integrate with your team's Linear instead of relying just on TODO.md? (y/N) " "N"; then
+Install Linear CLI to integrate with your team's Linear instead of relying just on TODOS.md? (y/N) " "N"; then
   if [ "$OS" = "macos" ] && command -v brew &> /dev/null; then
     brew install schpet/tap/linear
     echo "  Linear CLI installed."

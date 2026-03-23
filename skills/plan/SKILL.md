@@ -56,7 +56,7 @@ grep -r "TODO\|FIXME\|HACK\|XXX" -l --exclude-dir=node_modules --exclude-dir=ven
 ```
 
 Then read:
-- TODO.md if it exists. If Linear MCP tools are available, also scan relevant Linear issues.
+- TODOS.md if it exists. If Linear MCP tools are available, also scan relevant Linear issues.
 - CLAUDE.md for project conventions.
 - Any architecture docs or READMEs relevant to the area you're changing.
 
@@ -65,6 +65,33 @@ For backend features: use `curl` to hit relevant endpoints and observe current b
 If authentication is needed: AskUserQuestion for credentials. Propose env var setup for local testing.
 
 Report a brief summary of findings before proceeding.
+
+### Existing Work Tracker
+After the system audit, explicitly list any pre-existing TODOs or Linear tickets that this plan will address:
+
+```
+ADDRESSING EXISTING WORK
+===========================
+TODOS.md:
+  - [ ] P1-2: Fix auth token refresh (if relevant to this plan)
+  - (none found)
+
+Linear tickets:
+  - ENG-142: "Auth middleware rewrite" (In Progress)
+  - (none found / Linear not available)
+
+Codebase TODOs (from grep):
+  - src/auth.ts:42 — TODO: handle token expiry
+  - (none found)
+===========================
+```
+
+Rules:
+- If TODOS.md exists, scan it for items related to the current work. List any that this plan will fully or partially address.
+- If Linear CLI or MCP tools are available, search for relevant open issues. List matching tickets with their ID, title, and status.
+- If codebase grep found relevant TODO/FIXME comments, list file:line and the comment text.
+- If nothing is found, say "(none found)" for each section. Do not skip the section.
+- These references carry forward — they will be used by /ship-pr to link the PR to the work it completes.
 
 ## Phase 1: Purpose & Implementation Alternatives
 
@@ -94,7 +121,7 @@ Rules:
 State your recommendation with a one-line reason. Use AskUserQuestion to get the user's choice.
 
 ### Scope
-After approach is chosen, define boundaries. Strongly recommend removing old code if the new feature replaces it. Flag anything out of scope — add those items to TODO.md (and create Linear issues if MCP is available).
+After approach is chosen, define boundaries. Strongly recommend removing old code if the new feature replaces it. Flag anything out of scope — add those items to TODOS.md (and create Linear issues if MCP is available).
 
 ## Phase 2: Engineering Deep-Dive
 

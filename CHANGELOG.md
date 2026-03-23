@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.0
+
+### Added
+- **`/plan` Existing Work Tracker** — after the Phase 0 system audit, /plan now explicitly lists TODOS.md items, Linear tickets, and codebase TODO/FIXME comments that the plan will address. These references carry forward to /ship-pr for PR linking.
+- **`/ship-pr` Closes / Addresses section** — PR descriptions now include a mandatory section listing TODOS.md items completed, Linear tickets (using `Closes ENG-xxx` keywords for auto-tracking), and codebase TODOs resolved.
+- **`/ship-pr` enhanced Linear Integration** — scans TODOS.md for ticket references, includes `Closes ENG-xxx` in PR body for automatic Linear-GitHub linking, and falls back to `linear issue update --add-link` when CLI is authenticated.
+
+### Fixed
+- **TODOS.md naming consistency** — standardized all references across skills, docs, and install.sh from `TODO.md` to `TODOS.md`.
+
 ## 0.6.1
 
 ### Fixed

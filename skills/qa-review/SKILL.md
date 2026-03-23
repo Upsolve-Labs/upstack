@@ -54,4 +54,4 @@ For each selected flow, use `agent-browser`:
 Summarize findings in an MD report with annotated screenshots.
 
 ## Step 6: Log Issues
-List all findings to the user. AskUserQuestion: "Which of these should I log as TODOs?" Present each finding as a numbered option. Only create TODO.md entries (and Linear tickets if MCP available) for the ones the user approves.
+List all findings to the user. AskUserQuestion: "Which of these should I log as TODOs?" Present each finding as a numbered option. Only create TODOS.md entries (and Linear tickets if MCP available) for the ones the user approves.

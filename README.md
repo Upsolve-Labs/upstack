@@ -117,7 +117,7 @@ Or manually: `cd ~/.claude/skills/upstack && git pull`
 
 - **Tests before code, always.** Red/Green TDD is the default path.
 - **Evidence-based PRs.** Screenshots and API examples ship with every PR.
-- **Scope discipline.** Out-of-scope discoveries go to TODO.md (or Linear tickets), not into the current work.
+- **Scope discipline.** Out-of-scope discoveries go to TODOS.md (or Linear tickets), not into the current work.
 - **No bloat.** 10 skills, ~450 lines total. No build system, no templates, no binaries.
 
 ## License
