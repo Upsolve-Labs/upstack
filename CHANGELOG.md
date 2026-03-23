@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.1
+
+### Added
+- **`/plan` fast-path check** — when a plan already exists and the request is a small follow-up (review comment, quick fix), skips full ceremony (system audit, alternatives, error maps, test diagrams) and produces a lightweight plan amendment
+- **`/ship-pr` existing PR detection** — checks `gh pr list` before creating; if a PR already exists on the branch, pushes and comments instead of calling `gh pr create`
+- **`/review` auto-fix mode** — when running inside `/upstack-run` with a fast-path plan, auto-fixes all findings without asking the user
+
+### Changed
+- **`/upstack-run` Step 1** — always runs `/plan` instead of skipping when a plan exists; delegates ceremony decisions to `/plan`'s fast-path check
+
 ## 0.5.0
 
 ### Changed
