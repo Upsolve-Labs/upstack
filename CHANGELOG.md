@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0
+
+### Changed
+- **`/plan` skill rewritten** — deeper engineering analysis before any code is written:
+  - **Phase 0: System Audit** — git log, diff stats, TODO/FIXME scan to ground the plan in codebase reality
+  - **Phase 1: Implementation Alternatives** — mandatory 2-3 approaches compared (effort/risk/pros/cons) before committing
+  - **Phase 2: Error & Failure Map** — table of every codepath that can fail, whether it's caught, what the user sees
+  - **Phase 3: Test Coverage Diagram** — ASCII diagram of every codepath with TESTED/GAP markers and specific test specs per gap
+
 ## 0.4.0
 
 ### Added

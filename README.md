@@ -49,7 +49,7 @@ Skills are plain markdown — they work in any agent that reads SKILL.md files.
 ```
 you:    I want to build a telemetry dashboard for my SaaS app
 you:    /plan
-claude: [checks for test rig, proposes scope, eng review, test plan, then implementation plan]
+claude: [audits codebase, compares 2-3 implementation alternatives, maps error paths, produces test coverage diagram, then implementation plan]
 
 you:    /execute
 claude: [navigates your app with agent-browser, writes failing tests, implements, confirms green]
