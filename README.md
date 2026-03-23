@@ -49,10 +49,12 @@ Skills are plain markdown — they work in any agent that reads SKILL.md files.
 ```
 you:    I want to build a telemetry dashboard for my SaaS app
 you:    /plan
-claude: [audits codebase, compares 2-3 implementation alternatives, maps error paths, produces test coverage diagram, then implementation plan]
+claude: [audits codebase, compares 2-3 alternatives, maps error paths, test coverage diagram, implementation plan, structured tickets with dependency DAG, offers to materialize to Linear/TODOS.md]
 
 you:    /execute
 claude: [navigates your app with agent-browser, writes failing tests, implements, confirms green]
+        or: /execute --ticket P1-3
+claude: [reads ticket brief, checks dependencies, scopes tests to acceptance criteria, implements, marks done in TODOS.md]
 
 you:    /validate
 claude: [walks through every planned path manually, screenshots UI, saves API examples to evidence/]
@@ -72,8 +74,8 @@ claude: [writes docs, bumps version, opens PR with screenshots and Linear links]
 
 | Skill         | What It Does                                                                           |
 | ------------- | -------------------------------------------------------------------------------------- |
-| **/plan**     | Purpose, scope, eng review, test proposal, implementation proposal. Tests before code. |
-| **/execute**  | RED: write failing tests. GREEN: implement. Atomic commits.                            |
+| **/plan**     | Purpose, scope, eng review, test proposal, implementation proposal, structured tickets with dependency DAG, optional Linear materialize. Tests before code. |
+| **/execute**  | RED: write failing tests. GREEN: implement. Atomic commits. Supports `--ticket <ID>` for ticket-scoped execution with dependency checks and scope guardrails. |
 | **/validate** | Manually verify every path works. Save screenshots + API examples to `evidence/`.      |
 | **/review**   | Senior engineer code review against base branch. Best in a clean conversation.         |
 | **/ship-pr**  | Docs, version bump, PR with evidence screenshots and Linear links.                     |
@@ -99,7 +101,7 @@ Independent skills:
 | --- | --- | --- | --- |
 | **[gh](https://cli.github.com/)** | Yes | `/ship-pr` uses it to push commits, create/update PRs, and generate release notes. | macOS: `brew install gh` · Linux: [see docs](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) · Windows: `winget install --id GitHub.cli` |
 | **[agent-browser](https://github.com/vercel-labs/agent-browser)** (by Vercel) | Yes | `/plan`, `/validate`, `/review`, `/qa-review` use it to navigate frontend, click around the browser, and screenshot functionality. | macOS: `brew install agent-browser` · Other: `npm install -g agent-browser` |
-| **[linear-cli](https://github.com/schpet/linear-cli)** | Optional | Integrates with your team's Linear instead of relying just on the `TODO.md` file. | macOS: `brew install schpet/tap/linear-cli` · Other: `npm install -g linear-cli` |
+| **[linear-cli](https://github.com/schpet/linear-cli)** | Optional | `/plan` materialize phase creates Linear tickets from structured plan output. `/execute` updates ticket status during work. Falls back to `TODOS.md` when unavailable. | macOS: `brew install schpet/tap/linear-cli` · Other: `npm install -g linear-cli` |
 
 The install script detects your OS and what's missing, then walks you through each one.
 

@@ -3,9 +3,10 @@ name: plan
 description: |
   Plan a feature or bug fix with deep engineering analysis. Explores the codebase,
   compares implementation alternatives, maps error paths, and produces test coverage
-  diagrams — all before any code is written. Use when starting new work, breaking
-  down a feature, or before any code changes. Strongly recommended as the first
-  step before /execute.
+  diagrams — all before any code is written. Emits structured YAML tickets with
+  dependency DAG and self-contained agent briefs. Optionally materializes to
+  Linear and TODOS.md. Use when starting new work, breaking down a feature, or
+  before any code changes. Strongly recommended as the first step before /execute.
 ---
 
 ## Update Check (run first)
@@ -169,8 +170,119 @@ For each file change, note:
 - What changes and why
 - Which test(s) it satisfies from Phase 3
 
+## Phase 5: Structured Tickets & Dependency DAG
+
+After the implementation proposal, produce a machine-readable ticket list. This enables multi-agent orchestration, Linear integration, and dependency-aware scheduling.
+
+### Step 1: Emit structured ticket blocks
+
+Produce a YAML code block with one entry per TODO from the plan. Every ticket must be self-contained — a fresh agent with no prior context should be able to execute it.
+
+```yaml
+tickets:
+  - id: P1-1
+    title: "Short imperative description"
+    priority: 1        # 1 = urgent, 2 = important, 3 = nice-to-have
+    depends_on: []      # list of ticket IDs that must complete first
+    milestone: "P1: Milestone Name"
+    files:
+      - path/to/file1.ts
+      - path/to/file2.ts
+    acceptance_criteria:
+      - "Specific, testable condition that defines done"
+      - "Another condition"
+    context: |
+      WHY: Why this change exists (not just what).
+      READ FIRST: Key existing code to read (with file paths).
+      PATTERN: Follow the same pattern as X (file path).
+      DO NOT: Scope boundaries — what this ticket should NOT touch.
+      VERIFY: Specific test commands or manual checks to confirm done.
+    effort: S           # S / M / L
+```
+
+Rules:
+- One ticket per logical unit of work. If a TODO has sub-tasks, each sub-task is its own ticket.
+- `files` lists every file the ticket is expected to touch — this becomes the scope guardrail in /execute.
+- `acceptance_criteria` must be specific enough to write tests from. No vague language like "works correctly."
+- `context` must repeat relevant architecture/pattern info inline. Never write "see above" or "refer to Phase 1."
+- `depends_on` references ticket IDs from this plan, not external systems.
+- Group tickets by milestone. Milestones map to major plan sections (P1, P2, etc.).
+
+### Step 2: Emit dependency DAG
+
+After the ticket list, produce an ASCII dependency DAG:
+
+```
+DEPENDENCY DAG
+===========================
+P1-1 → P1-2 → P1-3 → P1-4
+                  ↘ P1-7
+P1-5 → P1-6
+P2-1 → P2-3 → P2-4
+P2-2 ↗
+P1-4 + P2-3 → P3-5
+
+UNBLOCKED NOW: P1-1, P1-5, P2-1, P2-2
+===========================
+```
+
+Rules:
+- Show every ticket. Isolated tickets (no dependencies) appear on their own line.
+- End with an "UNBLOCKED NOW" line listing tickets that can start immediately.
+- For milestone boundaries: note integration test specs (e.g., "After all P1 tickets: run `npm test -- --grep P1`").
+
+## Phase 6: Materialize
+
+After the user approves the plan, offer to materialize tickets into tracking systems.
+
+### Step 1: Detect Linear CLI
+
+```bash
+which linear 2>/dev/null && linear me 2>/dev/null
+```
+
+### Step 2: Offer options based on what's available
+
+- **If Linear CLI is available and authenticated:** AskUserQuestion with 3 options:
+  1. "Create Linear tickets + TODOS.md" — create tickets in Linear and write TODOS.md with links
+  2. "Just TODOS.md" — write TODOS.md only
+  3. "Skip" — do not materialize
+
+- **If Linear CLI is NOT available:** AskUserQuestion with 2 options:
+  1. "Create TODOS.md" — write TODOS.md with ticket checkboxes
+  2. "Skip" — do not materialize
+
+### Step 3: Write TODOS.md
+
+Format grouped by milestone, one checkbox per ticket:
+
+```markdown
+# Tickets
+
+## P1: Milestone Name
+- [ ] P1-1: Short title
+- [ ] P1-2: Short title (depends on P1-1)
+
+## P2: Another Milestone
+- [ ] P2-1: Short title
+```
+
+If Linear tickets were created, append the Linear link after each title:
+```markdown
+- [ ] P1-1: Short title [TSC-42](https://linear.app/team/issue/TSC-42)
+```
+
+### Step 4: Create Linear tickets (if chosen)
+
+For each ticket in the YAML block:
+```bash
+linear issue create --title "<title>" --description "<context + acceptance_criteria>" --priority <priority> --label "<milestone>"
+```
+
+If a ticket creation fails: warn the user, continue with remaining tickets, and note which failed in TODOS.md.
+
 ## For Bug Fixes
-Simplify to: Error & Failure Map + Test Coverage Diagram + Fix Recommendation only. Skip implementation alternatives unless the fix approach is genuinely ambiguous. If unsure whether something is a feature or bug, AskUserQuestion.
+Simplify to: Error & Failure Map + Test Coverage Diagram + Fix Recommendation only. Skip implementation alternatives unless the fix approach is genuinely ambiguous. If unsure whether something is a feature or bug, AskUserQuestion. For simple bugs (1-2 files), skip Phase 5 and Phase 6.
 
 ## Decisions
 Record every decision made via AskUserQuestion in the plan document. Use Claude Code's built-in plan infrastructure — store the plan in the standard plan file.
