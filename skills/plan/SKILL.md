@@ -27,6 +27,23 @@ Check if the project has a test rig (look for test config files, test directorie
 - If user refuses: explicitly warn that deliverables will be highly subpar without tests. Record this decision in the plan.
 - Skip TDD only for: pure greenfield with nothing to build, or non-code repos (markdown only).
 
+## Fast-Path Check
+
+Before running full ceremony, check whether this is a small follow-up to existing work:
+
+- **Conditions (ALL must be true):**
+  1. A plan already exists in the current conversation context.
+  2. The user's request is a small, scoped follow-up (e.g., responding to a review comment, fixing a specific bug, small tweak).
+
+- **If fast-path applies:**
+  - Announce: "Amending existing plan with follow-up fix."
+  - Skip Phase 0 (System Audit), Phase 1 (alternatives), Phase 2 (error/failure map), and Phase 3 (test coverage diagram).
+  - Produce only: **Purpose** (1-2 sentences on what changed and why) + **Implementation Proposal** (specific files and changes needed).
+  - No AskUserQuestion for approach selection — a small fix has one obvious approach.
+  - Proceed directly to /execute after producing the amendment.
+
+- **If fast-path does NOT apply** (no prior plan, or the follow-up is complex enough to warrant full analysis): continue with the full flow below.
+
 ## Phase 0: System Audit
 
 Before planning anything, ground yourself in the codebase. Run these commands:
