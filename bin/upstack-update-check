@@ -18,7 +18,7 @@ CACHE_FILE="$STATE_DIR/last-update-check"
 MARKER_FILE="$STATE_DIR/just-upgraded-from"
 SNOOZE_FILE="$STATE_DIR/update-snoozed"
 VERSION_FILE="$UPSTACK_DIR/VERSION"
-REMOTE_URL="${UPSTACK_REMOTE_URL:-https://raw.githubusercontent.com/upsolve/upstack/main/VERSION}"
+REMOTE_URL="${UPSTACK_REMOTE_URL:-https://raw.githubusercontent.com/Upsolve-Labs/upstack/main/VERSION}"
 
 # ─── Step 0: Check if updates are disabled ────────────────────
 _UC=$("$UPSTACK_DIR/bin/upstack-config" get update_check 2>/dev/null || true)
