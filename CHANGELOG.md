@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+### Fixed
+- **`/plan` fast-path** — replaced "proceed directly to /execute" with "return the amendment" to prevent fast-path from hijacking `/upstack-run` orchestration, which caused later steps (docs, version bump) to be skipped
+- **`/ship-pr` Step 1** — replaced vague "write or update docs" with concrete checklist requiring explicit UPDATED/NO CHANGE NEEDED report for README.md, CHANGELOG.md, docs/, and CLAUDE.md
+- **`/upstack-run` Step 5** — marked Ship step as MANDATORY with explicit "do not skip" and "do not end conversation without completing" guardrails
+
 ## 0.6.0
 
 ### Added

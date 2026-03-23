@@ -41,7 +41,7 @@ Before running full ceremony, check whether this is a small follow-up to existin
   - Skip Phase 0 (System Audit), Phase 1 (alternatives), Phase 2 (error/failure map), and Phase 3 (test coverage diagram).
   - Produce only: **Purpose** (1-2 sentences on what changed and why) + **Implementation Proposal** (specific files and changes needed).
   - No AskUserQuestion for approach selection — a small fix has one obvious approach.
-  - Proceed directly to /execute after producing the amendment.
+  - The plan phase is complete. Return the amendment — do not invoke /execute yourself.
 
 - **If fast-path does NOT apply** (no prior plan, or the follow-up is complex enough to warrant full analysis): continue with the full flow below.
 

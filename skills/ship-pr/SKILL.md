@@ -28,8 +28,14 @@ Three-in-one: documentation, versioning, and PR creation. No confirmation pauses
 
 If any check fails (other than #2, which is auto-resolved): report and stop. Do not ask to continue.
 
-## Step 1: Documentation
-Write or update docs for the feature set that was built. Keep docs close to the code — update existing doc files rather than creating new ones where possible.
+## Step 1: Documentation (do not skip)
+Review and update these. Report each as UPDATED or NO CHANGE NEEDED (with reason):
+1. README.md — does it reflect the new feature/fix?
+2. CHANGELOG.md — will be updated in Step 2, but note the entry now.
+3. Any `docs/` folder or inline doc comments in changed files.
+4. CLAUDE.md — if conventions or workflow changed.
+
+Keep docs close to the code — update existing doc files rather than creating new ones where possible. At minimum, review each item above and report your finding.
 
 ## Step 2: Version + Changelog
 AskUserQuestion — the ONLY interactive step:
