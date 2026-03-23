@@ -56,13 +56,33 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
      - Feature summary
      - Screenshots from `evidence/screenshots/` using `![name](url?raw=true)` format
      - API examples from `evidence/api/` or link to collection
-     - Linear ticket references if available (list and link them)
-4. Mark completed items in TODOS.md as done.
+     - **Closes / Addresses section** (MANDATORY — always include, even if empty):
+       - TODOS.md items addressed by this PR (e.g., "Completes P1-2: Fix auth token refresh")
+       - Linear ticket references using `Closes ENG-xxx` keyword format so Linear's GitHub integration auto-tracks PR completion
+       - Codebase TODO/FIXME comments resolved (file:line references)
+       - If none exist, write "No existing tickets or TODOs addressed."
+4. Mark completed items in TODOS.md as done (change `- [ ]` to `- [x]`).
 
 ## On Failure
 Report which step completed and which failed. Do NOT attempt to rollback.
 
 ## Linear Integration
-If `mcp__linear__*` tools are available:
-- Link the PR to relevant Linear issues found in TODOS.md (`LINEAR: ENG-xxx` references).
-- List linked tickets in the PR description.
+Scan TODOS.md for Linear ticket references (patterns: `[ENG-xxx](url)`, `LINEAR: ENG-xxx`, or bare `ENG-xxx` identifiers).
+
+### PR body keywords (primary mechanism)
+Include `Closes ENG-xxx` in the PR description for each relevant ticket. Linear's GitHub integration detects these keywords and:
+- Links the PR to the Linear issue automatically
+- Moves the issue to "Done" when the PR merges
+
+### CLI fallback (when Linear CLI is authenticated)
+```bash
+# Check if linear CLI is available and authenticated
+which linear 2>/dev/null && linear me 2>/dev/null
+```
+
+If authenticated, for each ticket referenced in TODOS.md:
+```bash
+linear issue update <issue-id> --add-link "<pr-url>"
+```
+
+If the CLI command fails: warn but do not block. The PR body keywords are the primary tracking mechanism.
