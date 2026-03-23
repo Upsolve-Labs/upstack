@@ -66,6 +66,33 @@ If authentication is needed: AskUserQuestion for credentials. Propose env var se
 
 Report a brief summary of findings before proceeding.
 
+### Existing Work Tracker
+After the system audit, explicitly list any pre-existing TODOs or Linear tickets that this plan will address:
+
+```
+ADDRESSING EXISTING WORK
+===========================
+TODOS.md:
+  - [ ] P1-2: Fix auth token refresh (if relevant to this plan)
+  - (none found)
+
+Linear tickets:
+  - ENG-142: "Auth middleware rewrite" (In Progress)
+  - (none found / Linear not available)
+
+Codebase TODOs (from grep):
+  - src/auth.ts:42 — TODO: handle token expiry
+  - (none found)
+===========================
+```
+
+Rules:
+- If TODOS.md exists, scan it for items related to the current work. List any that this plan will fully or partially address.
+- If Linear CLI or MCP tools are available, search for relevant open issues. List matching tickets with their ID, title, and status.
+- If codebase grep found relevant TODO/FIXME comments, list file:line and the comment text.
+- If nothing is found, say "(none found)" for each section. Do not skip the section.
+- These references carry forward — they will be used by /ship-pr to link the PR to the work it completes.
+
 ## Phase 1: Purpose & Implementation Alternatives
 
 ### Purpose
