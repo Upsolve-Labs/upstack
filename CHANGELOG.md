@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+
+### Added
+- **`/plan` Phase 5: Structured Tickets & Dependency DAG** — after the implementation proposal, emits a YAML ticket block per TODO with `id`, `title`, `priority`, `depends_on`, `milestone`, `files`, `acceptance_criteria`, `context` (self-contained agent brief), and `effort`. Includes an ASCII dependency DAG with "UNBLOCKED NOW" line for scheduling.
+- **`/plan` Phase 6: Materialize** — detects Linear CLI availability upfront, then offers to create Linear tickets + TODOS.md, just TODOS.md, or skip. Graceful fallback when Linear is unavailable.
+- **`/execute` ticket mode** — `--ticket <ID>` reads the structured ticket block from the plan, scopes tests to acceptance criteria, and enforces file-level scope guardrails.
+- **`/execute` dependency check** — verifies dependent tickets are complete in TODOS.md (and Linear if available) before starting work.
+- **`/execute` post-execution updates** — marks tickets done in TODOS.md, updates Linear status, reports newly unblocked tickets.
+
 ## 0.5.1
 
 ### Added
