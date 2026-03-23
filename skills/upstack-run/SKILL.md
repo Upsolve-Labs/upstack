@@ -45,9 +45,9 @@ If review finds CRITICAL or SECURITY findings:
 - Loop back to Step 2 (/execute) for the fixes.
 - Re-run /review. Maximum 3 review/execute loops before stopping and reporting to the user.
 
-## Step 5: Ship
+## Step 5: Ship (MANDATORY — do not skip)
 
-Run /ship-pr. Documentation, version bump, PR creation. The version bump question is the only interactive pause in this phase.
+Run /ship-pr. This step MUST execute — it handles documentation, version bump, and PR creation. All three are required outputs of /upstack-run. The version bump question is the only interactive pause. If you have reached this step, do not end the conversation without completing /ship-pr.
 
 ## Guardrails
 
