@@ -48,9 +48,10 @@ If the PR modifies any file in a UI/frontend package:
 Do NOT skip this even if automated E2E tests pass. Screenshots are
 PR evidence for human reviewers, not test assertions.
 
-If the project has a UI (check for frontend packages, Next.js, React, etc.), ALWAYS
-start the dev server and take at least one screenshot of each affected page,
-even if the plan only contains backend tickets.
+If the plan contains backend tickets that change API responses, config, or runtime
+behavior consumed by the UI: start the dev server and take at least one screenshot
+of each page that would reflect the change, even if no frontend files were
+directly modified.
 
 ### 3. Evidence Artifacts
 Save all evidence to the `evidence/` folder in the project root (create if needed):

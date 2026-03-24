@@ -48,6 +48,14 @@ AskUserQuestion — the ONLY interactive step:
 Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANGELOG.md.
 
 ## Step 3: PR Creation (no pauses from here)
+
+### Screenshot Check (run before creating or updating the PR)
+- If the diff includes files in UI/frontend packages AND `evidence/screenshots/`
+  is empty or missing: STOP and warn the user. Recommend running /validate
+  or capturing screenshots now.
+- If screenshots exist: continue and embed them in the PR body using absolute GitHub blob URLs.
+- Organize screenshots by feature or mode (e.g., "Docker mode" vs "Sprites mode").
+
 1. Commit version + changelog + docs: `chore: bump to vX.Y.Z`
 2. Push branch to remote.
 3. Check for existing PR: `gh pr list --head "$(git branch --show-current)" --json number --jq '.[0].number'`
@@ -62,14 +70,6 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
        - Codebase TODO/FIXME comments resolved (file:line references)
        - If none exist, write "No existing tickets or TODOs addressed."
 4. Mark completed items in TODOS.md as done (change `- [ ]` to `- [x]`).
-
-### Screenshot Check
-Before creating the PR:
-- If the diff includes files in UI/frontend packages AND `evidence/screenshots/`
-  is empty or missing: STOP and warn the user. Recommend running /validate
-  or capturing screenshots now.
-- If screenshots exist: embed them in the PR body using absolute GitHub blob URLs.
-- Organize screenshots by feature or mode (e.g., "Docker mode" vs "Sprites mode").
 
 ### Screenshot Embedding
 When embedding screenshots in the PR body, use ABSOLUTE GitHub blob URLs, not relative paths.
