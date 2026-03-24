@@ -37,6 +37,21 @@ For each planned path:
 - Save request/response pairs to `evidence/` in markdown format.
 - Verify response shapes, status codes, error handling match the plan.
 
+### UI Screenshot Rule (MANDATORY)
+If the PR modifies any file in a UI/frontend package:
+1. Start the dev server (`pnpm dev`, `npm run dev`, or equivalent).
+2. Navigate to EVERY page affected by the changes.
+3. Take at least one screenshot per affected page state using `agent-browser screenshot evidence/screenshots/<name>.png`.
+4. Save to `evidence/screenshots/` with descriptive names.
+5. If the feature has multiple modes (e.g., different runtimes, different user roles, different config states): capture screenshots of EACH mode.
+
+Do NOT skip this even if automated E2E tests pass. Screenshots are
+PR evidence for human reviewers, not test assertions.
+
+If the project has a UI (check for frontend packages, Next.js, React, etc.), ALWAYS
+start the dev server and take at least one screenshot of each affected page,
+even if the plan only contains backend tickets.
+
 ### 3. Evidence Artifacts
 Save all evidence to the `evidence/` folder in the project root (create if needed):
 - `evidence/screenshots/` — UI state screenshots

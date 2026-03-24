@@ -54,7 +54,7 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
    - **If PR exists:** Skip `gh pr create` — the push already updated the PR. Optionally run `gh pr comment <number> --body "..."` summarizing the new changes.
    - **If no PR exists:** Create PR via `gh pr create`. PR description includes:
      - Feature summary
-     - Screenshots from `evidence/screenshots/` using `![name](url?raw=true)` format
+     - Screenshots (see Screenshot Embedding below)
      - API examples from `evidence/api/` or link to collection
      - **Closes / Addresses section** (MANDATORY — always include, even if empty):
        - TODOS.md items addressed by this PR (e.g., "Completes P1-2: Fix auth token refresh")
@@ -62,6 +62,30 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
        - Codebase TODO/FIXME comments resolved (file:line references)
        - If none exist, write "No existing tickets or TODOs addressed."
 4. Mark completed items in TODOS.md as done (change `- [ ]` to `- [x]`).
+
+### Screenshot Check
+Before creating the PR:
+- If the diff includes files in UI/frontend packages AND `evidence/screenshots/`
+  is empty or missing: STOP and warn the user. Recommend running /validate
+  or capturing screenshots now.
+- If screenshots exist: embed them in the PR body using absolute GitHub blob URLs.
+- Organize screenshots by feature or mode (e.g., "Docker mode" vs "Sprites mode").
+
+### Screenshot Embedding
+When embedding screenshots in the PR body, use ABSOLUTE GitHub blob URLs, not relative paths.
+Relative paths do not render in PR descriptions.
+
+Format:
+```
+![description](https://github.com/{owner}/{repo}/blob/{branch}/evidence/screenshots/{filename}.png?raw=true)
+```
+
+Construct the URL from:
+- `gh repo view --json nameWithOwner --jq '.nameWithOwner'` → owner/repo
+- `git branch --show-current` → branch name
+- The screenshot filename in `evidence/screenshots/`
+
+Do NOT use relative paths like `![name](evidence/screenshots/name.png?raw=true)` — these are BROKEN in PR descriptions.
 
 ## On Failure
 Report which step completed and which failed. Do NOT attempt to rollback.

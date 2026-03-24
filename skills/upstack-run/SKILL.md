@@ -31,6 +31,11 @@ Run /execute against the approved plan. Strict Red/Green TDD: write failing test
 
 Run /validate. Walk through every planned path manually, capture evidence (screenshots, API examples) to `evidence/`.
 
+**IMPORTANT**: Do NOT skip /validate when UI files are in the diff.
+"Playwright tests pass" is NOT a substitute for /validate. Tests verify
+assertions; validate produces evidence (screenshots, API examples) for
+the PR and catches visual/UX issues that assertions miss.
+
 If validation finds gaps:
 - Amend the plan with the gaps.
 - Loop back to Step 2 (/execute) to close them.

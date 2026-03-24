@@ -23,10 +23,16 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/upstack/
 You are creating a plan for a feature or bug fix. Never write code in this phase.
 
 ## Gate: Test Rig Check
-Check if the project has a test rig (look for test config files, test directories, package.json test scripts, pytest.ini, etc).
-- If NO test rig exists: use AskUserQuestion to strongly recommend adding one. Explain that TDD is the foundation of quality delivery.
+For EACH package that the plan will modify, check if that package has its own test infrastructure:
+- Backend packages: look for vitest/jest config, test directories, package.json test scripts, pytest.ini, etc.
+- UI/frontend packages: look for Playwright/Cypress config, E2E test directories, browser test scripts.
+
+Rules:
+- If NO test rig exists at all: use AskUserQuestion to strongly recommend adding one. Explain that TDD is the foundation of quality delivery.
+- If a UI/frontend package will be modified but has NO E2E test setup: recommend adding Playwright (or equivalent) as part of the plan. Add a ticket for it.
 - If user refuses: explicitly warn that deliverables will be highly subpar without tests. Record this decision in the plan.
 - Skip TDD only for: pure greenfield with nothing to build, or non-code repos (markdown only).
+- Do NOT treat a project-wide unit test rig as sufficient for UI packages. Unit tests and E2E tests serve different purposes.
 
 ## Fast-Path Check
 
@@ -92,6 +98,20 @@ Rules:
 - If codebase grep found relevant TODO/FIXME comments, list file:line and the comment text.
 - If nothing is found, say "(none found)" for each section. Do not skip the section.
 - These references carry forward — they will be used by /ship-pr to link the PR to the work it completes.
+
+### Cross-Package Impact Check
+After identifying the primary files to change, check for downstream impact:
+- If changing API response shapes or adding endpoints: check if the UI consumes them
+  (`grep -r "api/" packages/ui/ --include="*.tsx" --include="*.ts"` or equivalent for the project structure)
+- If adding config options: check if the UI has a config panel or settings page
+- If changing container/pod/runtime behavior: check if the UI has a monitoring, status, or management page
+
+If UI impact is found: include UI changes in the plan scope. Do NOT treat
+backend-only plans as complete when the UI will show stale or broken content.
+
+For ANY feature that changes API responses, configuration, or behavior visible through the UI:
+use `agent-browser open <url>` and `agent-browser snapshot -i` to see the current UI state,
+even if the feature is primarily backend.
 
 ## Phase 1: Purpose & Implementation Alternatives
 
