@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0
+
+### Added
+- **`/plan` Cross-Package Impact Check** — Phase 0 now checks for downstream UI impact when changing API shapes, config options, or runtime behavior. Backend-only plans that affect the UI are flagged before they're approved.
+- **`/plan` per-package test rig gate** — Gate check now evaluates test infrastructure per-package. UI packages without E2E test setup (Playwright/Cypress) get a ticket recommendation, rather than being silently skipped because a unit test rig exists elsewhere.
+- **`/execute` UI-aware familiarization** — Phase 1 detects UI impact in the plan and runs the frontend familiarization flow (dev server, agent-browser navigation) even when the primary feature is backend.
+- **`/validate` mandatory UI screenshot rule** — If the PR modifies UI files, screenshots are required regardless of whether E2E tests pass. Screenshots are evidence for reviewers, not test assertions.
+- **`/ship-pr` screenshot safety check** — Warns when the diff includes UI files but `evidence/screenshots/` is empty. Prevents shipping UI changes without visual evidence.
+- **`/ship-pr` absolute GitHub blob URLs** — Screenshot embeds now use absolute `https://github.com/{owner}/{repo}/blob/{branch}/...?raw=true` URLs instead of relative paths, which break in PR descriptions.
+- **`/upstack-run` UI validation mandate** — Step 3 explicitly states that passing Playwright tests is not a substitute for `/validate` when UI files are in the diff.
+
 ## 0.7.0
 
 ### Added

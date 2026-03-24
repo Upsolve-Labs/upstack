@@ -39,12 +39,19 @@ Before writing any code, check if dependent tickets are complete:
 4. If TODOS.md doesn't exist: warn and proceed (dependencies can't be verified).
 
 ## Phase 1: Familiarize (before writing anything)
-For frontend features:
-- Use `agent-browser open <url>` to navigate the current page.
-- Click through paths in the plan that currently work.
-- Capture actual selectors and @refs for writing tests.
 
-For backend features:
+**Determine if this plan has UI impact:**
+Check if any planned file changes are in a UI/frontend package
+(e.g., `packages/ui/`, `src/app/`, `src/components/`, or any directory containing `.tsx`/`.jsx` files).
+
+**If UI impact exists** (even if the primary feature is backend):
+- Start the dev server if not running.
+- Use `agent-browser open <url>` to navigate affected pages.
+- Click through paths in the plan that currently work.
+- Capture current state before making changes.
+- Note actual selectors and @refs for writing E2E tests.
+
+**For backend paths** (always, regardless of UI impact):
 - Use `curl` to hit relevant API endpoints.
 - Observe current request/response patterns.
 - Note auth requirements, headers, response shapes.
