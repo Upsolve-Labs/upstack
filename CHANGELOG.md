@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1
+
+### Added
+- **`/ship-pr` test evidence gate** — Screenshot Check now also gates on new test files (`*.test.*`, `*.spec.*`). The PR body must include verbose test runner output proving the new tests pass. For Playwright/E2E tests, screenshots of tested behavior are also required.
+
 ## 0.8.0
 
 ### Added
