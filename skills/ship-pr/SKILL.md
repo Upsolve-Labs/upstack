@@ -53,6 +53,10 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
 - If the diff includes files in UI/frontend packages AND `evidence/screenshots/`
   is empty or missing: STOP and warn the user. Recommend running /validate
   or capturing screenshots now.
+- If the diff adds new test files (*.test.*, *.spec.*): the PR body MUST include
+  proof that the new tests pass. At minimum, embed the verbose test runner output.
+  If the tests are Playwright/E2E tests, also capture and embed screenshots of the
+  tested behavior. STOP if no evidence exists — run the tests now and capture output.
 - If screenshots exist: continue and embed them in the PR body using absolute GitHub blob URLs.
 - Organize screenshots by feature or mode (e.g., "Docker mode" vs "Sprites mode").
 
