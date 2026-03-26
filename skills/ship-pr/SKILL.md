@@ -53,6 +53,15 @@ Update VERSION, package.json, or pyproject.toml (whichever exists). Update CHANG
 - If the diff includes files in UI/frontend packages AND `evidence/screenshots/`
   is empty or missing: STOP and warn the user. Recommend running /validate
   or capturing screenshots now.
+- If the diff adds new test files (`*.test.*`, `*.spec.*`, `test_*.py`, `*_test.py`,
+  `*_test.go`, `*_spec.rb`, `test_*.rb`): the PR body MUST include proof that the
+  new tests pass. At minimum, embed the verbose test runner output.
+  To detect Playwright/E2E tests: check for `playwright` imports in the test file,
+  a `playwright.config.*` at the repo root, or test location in an `e2e/` directory.
+  If E2E tests are detected, also capture and embed screenshots of the tested behavior.
+  STOP if no evidence exists — run the tests now and capture output.
+  STOP if the tests fail — do not embed failure output as "evidence." The tests must
+  be green before the PR can ship. Report the failures and halt.
 - If screenshots exist: continue and embed them in the PR body using absolute GitHub blob URLs.
 - Organize screenshots by feature or mode (e.g., "Docker mode" vs "Sprites mode").
 
