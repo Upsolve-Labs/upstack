@@ -219,6 +219,11 @@ For each file change, note:
 
 ## Phase 4b: Constitution Check (mission alignment)
 
+**Skip this entire phase for simple bug fixes** (1-2 files, or anything routed
+through the "For Bug Fixes" rule at the end of this document) and for anything
+that took the Fast-Path. Go straight to Phase 5. A one-file fix does not need a
+mission audit.
+
 A plan can be individually sound and still be the wrong work. This is the cheap
 first pass that catches that — you audit your own plan against the product's
 stated mission before a human ever sees it. It is a **self-check, not an
@@ -226,22 +231,36 @@ approval**: the human still gates the plan.
 
 ### Step 1: Find the constitution
 
-Look, in order, and stop at the first hit:
-
-1. `.toscanini/agent-context.md` → a `## Mission` section (injected by the orchestrator).
-2. A repo `constitution.md` (Spec-Kit convention), at the root or under `.specify/`, `docs/`, or `.github/`.
-3. `AGENTS.md` → a `## Mission`, `## Principles`, or `## Constitution` section. (`CLAUDE.md` only if there is no `AGENTS.md`.)
-4. `docs/**/*vision*.md` → its principles section.
+Exactly ONE document is the constitution. Run these in order and **stop at the
+first command that prints a path** — do not merge candidates, and do not pick by
+"which looks best".
 
 ```bash
-ls .toscanini/agent-context.md constitution.md .specify/constitution.md docs/constitution.md .github/constitution.md 2>/dev/null
-grep -l -iE '^#+ *(mission|principles|constitution)' AGENTS.md CLAUDE.md docs/*.md docs/**/*.md 2>/dev/null | head -5
+# 1. Orchestrator-injected mission (must actually contain a "## Mission" section)
+grep -lE '^#{1,3} *Mission\b' .toscanini/agent-context.md 2>/dev/null | head -1
+
+# 2. Spec-Kit constitution.md — root first, then the conventional subdirs
+ls constitution.md .specify/constitution.md docs/constitution.md .github/constitution.md 2>/dev/null | head -1
+
+# 3. AGENTS.md with a mission/principles/constitution section
+#    (CLAUDE.md ONLY when there is no AGENTS.md at all)
+grep -lE '^#{1,3} *(Mission|Principles|Constitution)\b' AGENTS.md 2>/dev/null | head -1
+[ -f AGENTS.md ] || grep -lE '^#{1,3} *(Mission|Principles|Constitution)\b' CLAUDE.md 2>/dev/null | head -1
+
+# 4. A vision doc with a principles section (vision files only — not all of docs/)
+grep -rlE '^#{1,3} *(Mission|Principles|Constitution)\b' --include='*vision*.md' docs 2>/dev/null | sort | head -1
 ```
 
-**If nothing is found, this phase is a NO-OP.** Print one line — `Constitution
-Check: no constitution found — skipped.` — and go to Phase 5. Do not invent a
-mission, do not infer one from the README, and do not ask the user to write one.
-An absent constitution is a valid state, not a blocker.
+Each step matches only documents that actually contain the section — a
+`constitution.md` that exists but is empty, or an `AGENTS.md` with no mission
+section, is NOT a hit, so precedence falls through to the next step rather than
+auditing against a document that says nothing. State which file you used in one
+line before the audit table, so the reader can check you used the right one.
+
+**If every step comes back empty, this phase is a NO-OP.** Print one line —
+`Constitution Check: no constitution found — skipped.` — and go to Phase 5. Do
+not invent a mission, do not infer one from the README, and do not ask the user
+to write one. An absent constitution is a valid state, not a blocker.
 
 ### Step 2: Audit the plan as a compliance officer
 

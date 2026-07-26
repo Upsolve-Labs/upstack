@@ -3,7 +3,7 @@ name: ship-pr
 description: |
   Ship a feature branch: write docs, bump version, create PR with screenshots
   and evidence. Links Linear tickets if available. Use when ready to merge.
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 ## Update Check (run first)
