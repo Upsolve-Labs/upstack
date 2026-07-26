@@ -219,10 +219,15 @@ For each file change, note:
 
 ## Phase 4b: Constitution Check (mission alignment)
 
-**Skip this entire phase for simple bug fixes** (1-2 files, or anything routed
-through the "For Bug Fixes" rule at the end of this document) and for anything
-that took the Fast-Path. Go straight to Phase 5. A one-file fix does not need a
-mission audit.
+**Skip this entire phase only for a simple BUG FIX** (something routed through
+the "For Bug Fixes" rule at the end of this document) or a Fast-Path amendment.
+Go straight to Phase 5 in those two cases.
+
+Size is **not** a reason to skip. A one-file feature, migration, or refactor
+still gets the audit — "small" says nothing about whether the work is on-mission,
+and a two-line change in the wrong direction is exactly what this phase is for.
+A bug fix is exempt because restoring intended behaviour is aligned by
+definition, not because it is small.
 
 A plan can be individually sound and still be the wrong work. This is the cheap
 first pass that catches that — you audit your own plan against the product's
@@ -423,7 +428,7 @@ linear issue create --title "<title>" --description "<context + acceptance_crite
 If a ticket creation fails: warn the user, continue with remaining tickets, and note which failed in TODOS.md.
 
 ## For Bug Fixes
-Simplify to: Error & Failure Map + Test Coverage Diagram + Fix Recommendation only. Skip implementation alternatives unless the fix approach is genuinely ambiguous. If unsure whether something is a feature or bug, AskUserQuestion. For simple bugs (1-2 files), skip Phase 4b, Phase 5 and Phase 6.
+Simplify to: Error & Failure Map + Test Coverage Diagram + Fix Recommendation only. Skip implementation alternatives unless the fix approach is genuinely ambiguous. If unsure whether something is a feature or bug, AskUserQuestion. For simple bugs (1-2 files), skip Phase 4b, Phase 5 and Phase 6 — this exemption is for BUG FIXES only; a small feature or refactor still gets the Phase 4b audit.
 
 ## Decisions
 Record every decision made via AskUserQuestion in the plan document. Use Claude Code's built-in plan infrastructure — store the plan in the standard plan file.
