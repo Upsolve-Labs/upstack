@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- **`/plan` Constitution Check (Phase 4b)** — before tickets are emitted, the plan is audited
+  against the product's stated mission ("which principle does each step advance?") and ends with a
+  one-line verdict that carries into TODOS.md. Approving a plan's *alignment*, not just its diff,
+  is what catches multi-step off-mission work. A **no-op** when no constitution is found — it
+  looks for `.toscanini/agent-context.md`, `constitution.md`, an `AGENTS.md` mission/principles
+  section, or a `docs/**/*vision*.md`, and skips with one line if there is none.
+- **Automated-contribution guide** (CONTRIBUTING.md) — how an orchestrator proposes a skill
+  change: one lesson per PR, append-only, provenance cited, global lessons only. Documents the
+  step that is easy to miss — merging a skill change is not deployment, because skills are baked
+  into the agent image, so the image must be rebuilt and the warm pool refreshed
+  (`POST /api/warm-pool/refresh`) before running agents pick it up.
+
 ## 0.8.0
 
 ### Added
