@@ -239,8 +239,12 @@ first command that prints a path** — do not merge candidates, and do not pick 
 # 1. Orchestrator-injected mission (must actually contain a "## Mission" section)
 grep -lE '^#{1,3} *Mission\b' .toscanini/agent-context.md 2>/dev/null | head -1
 
-# 2. Spec-Kit constitution.md — root first, then the conventional subdirs
-ls constitution.md .specify/constitution.md docs/constitution.md .github/constitution.md 2>/dev/null | head -1
+# 2. Spec-Kit constitution.md — root first, then the conventional subdirs.
+#    Must be NON-EMPTY: the whole file is the constitution, so it needs no named
+#    section, but an empty/whitespace-only one is not a hit.
+for f in constitution.md .specify/constitution.md docs/constitution.md .github/constitution.md; do
+  [ -s "$f" ] && grep -qE '\S' "$f" && { echo "$f"; break; }
+done
 
 # 3. AGENTS.md with a mission/principles/constitution section
 #    (CLAUDE.md ONLY when there is no AGENTS.md at all)
@@ -251,11 +255,17 @@ grep -lE '^#{1,3} *(Mission|Principles|Constitution)\b' AGENTS.md 2>/dev/null | 
 grep -rlE '^#{1,3} *(Mission|Principles|Constitution)\b' --include='*vision*.md' docs 2>/dev/null | sort | head -1
 ```
 
-Each step matches only documents that actually contain the section — a
-`constitution.md` that exists but is empty, or an `AGENTS.md` with no mission
-section, is NOT a hit, so precedence falls through to the next step rather than
-auditing against a document that says nothing. State which file you used in one
-line before the audit table, so the reader can check you used the right one.
+Eligibility differs by kind, and every step enforces it, so precedence falls
+through rather than auditing against a document that says nothing:
+
+- **A dedicated `constitution.md`** qualifies when it is **non-empty** — the whole
+  file is the constitution, so it needs no named section.
+- **Every other candidate** qualifies only when it actually **contains** a
+  Mission / Principles / Constitution section, because the rest of the file is
+  something else.
+
+State which file you used in one line before the audit table, so the reader can
+check you used the right one.
 
 **If every step comes back empty, this phase is a NO-OP.** Print one line —
 `Constitution Check: no constitution found — skipped.` — and go to Phase 5. Do
