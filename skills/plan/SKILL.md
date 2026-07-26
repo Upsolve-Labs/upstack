@@ -217,6 +217,66 @@ For each file change, note:
 - What changes and why
 - Which test(s) it satisfies from Phase 3
 
+## Phase 4b: Constitution Check (mission alignment)
+
+A plan can be individually sound and still be the wrong work. This is the cheap
+first pass that catches that — you audit your own plan against the product's
+stated mission before a human ever sees it. It is a **self-check, not an
+approval**: the human still gates the plan.
+
+### Step 1: Find the constitution
+
+Look, in order, and stop at the first hit:
+
+1. `.toscanini/agent-context.md` → a `## Mission` section (injected by the orchestrator).
+2. A repo `constitution.md` (Spec-Kit convention), at the root or under `.specify/`, `docs/`, or `.github/`.
+3. `AGENTS.md` → a `## Mission`, `## Principles`, or `## Constitution` section. (`CLAUDE.md` only if there is no `AGENTS.md`.)
+4. `docs/**/*vision*.md` → its principles section.
+
+```bash
+ls .toscanini/agent-context.md constitution.md .specify/constitution.md docs/constitution.md .github/constitution.md 2>/dev/null
+grep -l -iE '^#+ *(mission|principles|constitution)' AGENTS.md CLAUDE.md docs/*.md docs/**/*.md 2>/dev/null | head -5
+```
+
+**If nothing is found, this phase is a NO-OP.** Print one line — `Constitution
+Check: no constitution found — skipped.` — and go to Phase 5. Do not invent a
+mission, do not infer one from the README, and do not ask the user to write one.
+An absent constitution is a valid state, not a blocker.
+
+### Step 2: Audit the plan as a compliance officer
+
+Read the constitution, then re-read your own Phase 4 proposal with one question
+per step: *which stated principle does this advance?*
+
+| Plan step | Principle it advances | Verdict |
+| --- | --- | --- |
+| (from Phase 4) | quote or name the principle | ALIGNED / OFF-MISSION / NEUTRAL |
+
+Rules:
+
+- Name a **specific** principle. "Improves quality" is not a principle unless
+  the constitution says so — that answer means the step is NEUTRAL.
+- **OFF-MISSION** → cut the step, or state in one line why it is required anyway
+  (e.g. it unblocks an aligned step, or it is a legal/security obligation).
+- **NEUTRAL** is fine in small numbers (plumbing, tests, migrations). If MOST of
+  the plan is NEUTRAL, the plan is probably solving the wrong problem — say so.
+- Judge the plan against the constitution as written. If you think the
+  constitution itself is wrong, say that separately; do not quietly reinterpret it.
+
+### Step 3: Emit the verdict
+
+End the phase with exactly one line, which carries into the ticket list and the PR:
+
+```
+CONSTITUTION CHECK: PASS — every step maps to a stated principle.
+CONSTITUTION CHECK: PASS WITH NOTES — cut <step>; <step> kept as NEUTRAL plumbing.
+CONSTITUTION CHECK: NEEDS HUMAN — <n> steps are off-mission and I can't justify them.
+```
+
+`NEEDS HUMAN` does **not** stop you from finishing the plan. Produce the tickets
+anyway and lead with the verdict, so the human is approving *plan alignment*
+rather than only reviewing the diff.
+
 ## Phase 5: Structured Tickets & Dependency DAG
 
 After the implementation proposal, produce a machine-readable ticket list. This enables multi-agent orchestration, Linear integration, and dependency-aware scheduling.
@@ -306,6 +366,8 @@ Format grouped by milestone, one checkbox per ticket:
 ```markdown
 # Tickets
 
+> CONSTITUTION CHECK: PASS — every step maps to a stated principle.
+
 ## P1: Milestone Name
 - [ ] P1-1: Short title
 - [ ] P1-2: Short title (depends on P1-1)
@@ -313,6 +375,9 @@ Format grouped by milestone, one checkbox per ticket:
 ## P2: Another Milestone
 - [ ] P2-1: Short title
 ```
+
+Include the Phase 4b verdict line only if that phase produced one (omit it
+entirely when no constitution was found).
 
 If Linear tickets were created, append the Linear link after each title:
 ```markdown
@@ -329,7 +394,7 @@ linear issue create --title "<title>" --description "<context + acceptance_crite
 If a ticket creation fails: warn the user, continue with remaining tickets, and note which failed in TODOS.md.
 
 ## For Bug Fixes
-Simplify to: Error & Failure Map + Test Coverage Diagram + Fix Recommendation only. Skip implementation alternatives unless the fix approach is genuinely ambiguous. If unsure whether something is a feature or bug, AskUserQuestion. For simple bugs (1-2 files), skip Phase 5 and Phase 6.
+Simplify to: Error & Failure Map + Test Coverage Diagram + Fix Recommendation only. Skip implementation alternatives unless the fix approach is genuinely ambiguous. If unsure whether something is a feature or bug, AskUserQuestion. For simple bugs (1-2 files), skip Phase 4b, Phase 5 and Phase 6.
 
 ## Decisions
 Record every decision made via AskUserQuestion in the plan document. Use Claude Code's built-in plan infrastructure — store the plan in the standard plan file.
